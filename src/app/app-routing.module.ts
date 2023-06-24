@@ -3,17 +3,22 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'explore',
-    pathMatch: 'full'
+    path: 'movie-notes',
+    redirectTo: 'movie-notes/tabs',
+    pathMatch:'full'
+  },
+  {
+    path:'',
+    redirectTo: 'movie-notes/tabs',
+    pathMatch:'full'
   },
   {
     path: 'explore',
-    loadChildren: () => import('./explore/explore.module').then( m => m.ExplorePageModule)
+    loadChildren:()=>import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule)
   },
   {
     path: 'favorites',
-    loadChildren: () => import('./favorites/favorites.module').then( m => m.FavoritesPageModule)
+    loadChildren: () => import('./movies-tab/favorites/favorites.module').then( m => m.FavoritesPageModule)
   },
   {
     path: 'add-note',
@@ -22,6 +27,14 @@ const routes: Routes = [
   {
     path: 'my-profile',
     loadChildren: () => import('./my-profile/my-profile.module').then( m => m.MyProfilePageModule)
+  },
+  {
+    path: 'watch-list',
+    loadChildren: () => import('./movies-tab/watch-list/watch-list.module').then( m => m.WatchListPageModule)
+  },
+  {
+    path: 'movie-notes',
+    loadChildren: () => import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule)
   },
 ];
 
