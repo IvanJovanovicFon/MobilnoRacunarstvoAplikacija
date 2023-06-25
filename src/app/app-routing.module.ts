@@ -3,14 +3,13 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'movie-notes',
-    redirectTo: 'movie-notes/tabs',
+    path:'',
+    redirectTo: 'movie-notes/tabs/explore',
     pathMatch:'full'
   },
   {
-    path:'',
-    redirectTo: 'movie-notes/tabs',
-    pathMatch:'full'
+    path: 'movie-notes',
+    loadChildren: () => import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule)
   },
   {
     path: 'explore',
@@ -31,11 +30,7 @@ const routes: Routes = [
   {
     path: 'watch-list',
     loadChildren: () => import('./movies-tab/watch-list/watch-list.module').then( m => m.WatchListPageModule)
-  },
-  {
-    path: 'movie-notes',
-    loadChildren: () => import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule)
-  },
+  }
 ];
 
 @NgModule({

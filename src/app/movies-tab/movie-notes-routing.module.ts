@@ -10,6 +10,11 @@ const routes: Routes = [
     component: MovieNotesPage,
     children:[
       {
+        path: '',
+        redirectTo:  'movie-notes/tabs/explore',//zasto ne  odee  ovde kad se ukuca samo movie-notes tabs
+        pathMatch: 'full'
+      },
+      {
         path: 'explore',
         loadChildren: () => import('./explore/explore.module').then( m => m.ExplorePageModule)
       },
@@ -20,17 +25,12 @@ const routes: Routes = [
       {
         path: 'watch-list',
         loadChildren: () => import('./watch-list/watch-list.module').then( m => m.WatchListPageModule)
-      },
-      {
-        path: '',
-        redirectTo:  'movie-notes/tabs/explore',
-        pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo:  'movie-notes/tabs/explore',
+    redirectTo:  'movie-notes/tabs/explore',// ne radi mi ovo
     pathMatch: 'full'
   }
 ];
