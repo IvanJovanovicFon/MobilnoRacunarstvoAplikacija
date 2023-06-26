@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { ExplorePageRoutingModule } from './explore-routing.module';
 
 import { ExplorePage } from './explore.page';
+import { NoteElementComponent } from '../note-element/note-element.component';
+import { MovieElementComponent } from '../note-element/movie-element/movie-element.component';
+import { NoteDetailsPipe } from './note-details.pipe';
 
 @NgModule({
   imports: [
@@ -15,6 +18,6 @@ import { ExplorePage } from './explore.page';
     IonicModule,
     ExplorePageRoutingModule
   ],
-  declarations: [ExplorePage]
+  declarations: [ExplorePage, NoteElementComponent, MovieElementComponent, NoteDetailsPipe]
 })
 export class ExplorePageModule {}
