@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: ExplorePage
+  },
+  {
+    path: ':noteId',
+    loadChildren: () => import('./note-edit/note-edit.module').then( m => m.NoteEditPageModule)
   }
 ];
 

@@ -1,12 +1,19 @@
 <ion-card class="note">
-  <ion-card-header>//treba neki slot da se doda
-    <ion-icon  name="create-outline"></ion-icon>
+  <ion-card-header>
+    <ion-row>
+      <ion-col size="auto">
+        <ion-title>Note</ion-title>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-icon name="create-outline" [routerLink]="['/', 'movie-notes', 'tabs', 'explore', note.id]"></ion-icon>
+      </ion-col>
+    </ion-row>
   </ion-card-header>
-  <ion-title>Note</ion-title>
+  
   <ion-card-content>
     <ion-item>
       <ion-thumbnail slot="start">
-        <img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fmovie&amp;psig=AOvVaw2cxd-nn8bc2avDI0hjlmMX&amp;ust=1687874816012000&amp;source=images&amp;cd=vfe&amp;ved=0CA4QjRxqFwoTCLjZo-eN4f8CFQAAAAAdAAAAABAE" alt="Movie Image">
+        <img src = '{{note.movie.imageUrl}}' alt="Movie Image">
       </ion-thumbnail>
       <ion-label>
         <h2 class="movie-title">{{note.movie.title}}</h2>

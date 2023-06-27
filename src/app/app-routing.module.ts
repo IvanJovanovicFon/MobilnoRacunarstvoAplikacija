@@ -4,20 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path:'',
-    redirectTo: 'movie-notes/tabs/explore',
+    redirectTo: 'movie-notes',
     pathMatch:'full'
   },
   {
     path: 'movie-notes',
     loadChildren: () => import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule)
-  },
-  {
-    path: 'explore',
-    loadChildren:()=>import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule)
-  },
-  {
-    path: 'favorites',
-    loadChildren: () => import('./movies-tab/favorites/favorites.module').then( m => m.FavoritesPageModule)
   },
   {
     path: 'add-note',
@@ -28,8 +20,8 @@ const routes: Routes = [
     loadChildren: () => import('./my-profile/my-profile.module').then( m => m.MyProfilePageModule)
   },
   {
-    path: 'watch-list',
-    loadChildren: () => import('./movies-tab/watch-list/watch-list.module').then( m => m.WatchListPageModule)
+    path: '**', // Add a wildcard route for handling unknown routes
+    redirectTo: 'movie-notes'
   }
 ];
 
@@ -40,3 +32,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

@@ -11,7 +11,7 @@ const routes: Routes = [
     children:[
       {
         path: '',
-        redirectTo:  'movie-notes/tabs/explore',//zasto ne  odee  ovde kad se ukuca samo movie-notes tabs
+        redirectTo:  'tabs/explore',
         pathMatch: 'full'
       },
       {
@@ -30,7 +30,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo:  'movie-notes/tabs/explore',// ne radi mi ovo
+    redirectTo:  'tabs/explore',
     pathMatch: 'full'
   }
 ];
