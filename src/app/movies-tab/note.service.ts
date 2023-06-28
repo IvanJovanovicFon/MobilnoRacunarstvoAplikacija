@@ -16,7 +16,11 @@ export class NoteService {
 
   //constructor() { }
 
-  getNote(id: string){
-    return this.notes.find((n:Note)=> n.id === id);
+  getNote(id: string): Note {
+    const note = this.notes.find((n: Note) => n.id === id);
+    if (!note) {
+      throw new Error(`Note with ID ${id} not found.`);
+    }
+    return note;
   }
 }

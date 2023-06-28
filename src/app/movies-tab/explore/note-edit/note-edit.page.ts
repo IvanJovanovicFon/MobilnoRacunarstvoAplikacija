@@ -16,11 +16,16 @@ export class NoteEditPage implements OnInit {
 
      constructor(private route:ActivatedRoute, private notesService: NoteService) { }
 
-  ngOnInit() {
-    // this.route.paramMap.subscribe(paramMap =>{
-    //   this.note = this.notesService.getNote(paramMap.get('noteId'))
-    // })
-  }
+     ngOnInit() {
+      this.route.paramMap.subscribe(paramMap => {
+        const noteId = paramMap.get('noteId');
+        if (noteId) {
+          this.note = this.notesService.getNote(noteId);
+        }
+      });
+
+    }
+    
 
 
 

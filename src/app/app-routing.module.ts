@@ -19,9 +19,17 @@ const routes: Routes = [
     path: 'my-profile',
     loadChildren: () => import('./my-profile/my-profile.module').then( m => m.MyProfilePageModule)
   },
+  // {
+  //   path: '**', // Add a wildcard route for handling unknown routes
+  //   redirectTo: 'movie-notes'
+  // },
   {
-    path: '**', // Add a wildcard route for handling unknown routes
-    redirectTo: 'movie-notes'
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   }
 ];
 
