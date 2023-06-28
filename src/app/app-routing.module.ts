@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -9,22 +10,25 @@ const routes: Routes = [
   },
   {
     path: 'movie-notes',
-    loadChildren: () => import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule)
+    loadChildren: () => import('./movies-tab/movies-tab.module').then( m => m.MoviesTabPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'add-note',
-    loadChildren: () => import('./add-note/add-note.module').then( m => m.AddNotePageModule)
+    loadChildren: () => import('./add-note/add-note.module').then( m => m.AddNotePageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'my-profile',
-    loadChildren: () => import('./my-profile/my-profile.module').then( m => m.MyProfilePageModule)
+    loadChildren: () => import('./my-profile/my-profile.module').then( m => m.MyProfilePageModule),
+    canLoad: [AuthGuard]
   },
   // {
   //   path: '**', // Add a wildcard route for handling unknown routes
   //   redirectTo: 'movie-notes'
   // },
   {
-    path: 'login',
+    path: 'log-in',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   },
   {
