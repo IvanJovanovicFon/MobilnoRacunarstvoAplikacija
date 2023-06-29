@@ -1,4 +1,4 @@
-import { Component, OnInit,  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Note } from '../note.model';
 import { NoteService } from '../note.service';
 
@@ -8,25 +8,27 @@ import { NoteService } from '../note.service';
   styleUrls: ['./explore.page.scss'],
 })
 export class ExplorePage implements OnInit {
+  notes: Note[] = [];
 
-// notes: Note[] = [
-//   {id:'n1', description:'dobar',movieId:'m1',
-//   movie:{id:"m1", imageUrl:"https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjS3Ibuk-H_AhWpSPEDHWWfDt4Q1bUFegQIHBAA&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Famazon&usg=AOvVaw2CApNQHYDAcJlpsvFBIHVW&opi=89978449",
-//    title:"Lord of the rings", year:"2023."}, userId:'u1', isFavorite:false, isOnWatchlist:false },
-// {id:'n2', description:'onako', movieId:'m2',
-// movie:{id:"m2", imageUrl:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fmovie&psig=AOvVaw2cxd-nn8bc2avDI0hjlmMX&ust=1687874816012000&source=images&cd=vfe&ved=0CA4QjRxqFwoTCLjZo-eN4f8CFQAAAAAdAAAAABAE",
-//    title:"Pans Labirint", year:"2024."}, userId:'u2', isFavorite:true, isOnWatchlist:true }
-// ];
+  constructor(private noteService: NoteService) {}
 
-  notes: Note[];
+  searchTerm: string = '';
+  searchResults: Note[] = [];
 
-  constructor(private noteService:NoteService) { 
-    console.log('Construcor');
-    this.notes =  this.noteService.notes;
+  search() {
+    if (this.searchTerm.trim() === '') {
+      this.searchResults = this.notes;
+    } else {
+    this.searchResults = this.notes.filter((note: Note) =>
+      note.movie.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
   }
 
   ngOnInit() {
-    
+   this.notes= this.noteService.getNotes();
+   if (this.searchTerm.trim() === '') {
+    this.searchResults = this.notes;
+   }
   }
-
 }

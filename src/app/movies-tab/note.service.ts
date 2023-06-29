@@ -23,4 +23,8 @@ export class NoteService {
     }
     return note;
   }
+
+  getNotes():Note[] {
+    return this.notes;
+  }
 }
