@@ -20,7 +20,7 @@ export class NoteEditPage implements OnInit {
       this.route.paramMap.subscribe(paramMap => {
         const noteId = paramMap.get('noteId');
         if (noteId) {
-          this.note = this.notesService.getNote(noteId);
+           this.note = this.notesService.getNote(noteId);
         }
       });
 
