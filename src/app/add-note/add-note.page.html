@@ -4,6 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-searchbar color="secondary" animated="true" show-clear-button="focus" value="Search for note" [(ngModel)]="searchTerm" (ionChange)="search()"></ion-searchbar>
 <ion-content>
-
+<ion-list>
+</ion-list>
 </ion-content>
