@@ -3,6 +3,7 @@
   <ion-row >
     <ion-col offset = "11" >
       <ion-icon size="medium" name="create-outline" [routerLink]="['/', 'movie-notes', 'tabs', 'explore', note.id]"></ion-icon>
+      //takodje trebalo bi kada se uloguje korisnik svuda da se cuva njegov id, nmg to sad, a vrv je najbolje da radimo to kad odradimo bazu
     </ion-col>
     <ion-col offset="1">
       <ion-title>Movie</ion-title>
@@ -28,6 +29,7 @@
   <ion-title>Description</ion-title>
 </ion-col>
 </ion-row>
+
 <ion-row>
   <ion-col>
     <p class="note-description">{{note.description}}</p>
@@ -36,7 +38,6 @@
   <ion-row>
     <ion-col offset="9">
       <ion-icon size="large" [name]="note.isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
-      <ion-icon size = "large" [name]="note.isOnWatchlist ? 'bookmark' : 'bookmark-outline'"></ion-icon> 
     </ion-col>
   </ion-row>
  </ion-card>

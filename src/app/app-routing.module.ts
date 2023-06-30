@@ -23,17 +23,13 @@ const routes: Routes = [
     loadChildren: () => import('./my-profile/my-profile.module').then( m => m.MyProfilePageModule),
     canLoad: [AuthGuard]
   },
-  // {
-  //   path: '**', // Add a wildcard route for handling unknown routes
-  //   redirectTo: 'movie-notes'
-  // },
   {
     path: 'log-in',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'register',
-    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule),
   }
 ];
 

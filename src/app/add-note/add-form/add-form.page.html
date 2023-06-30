@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>add-form</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<form [formGroup]="addForm" (ngSubmit)="addNote">
+  
+  <ion-item>
+    <ion-label>Movie</ion-label>
+    <ion-select formControlName="selectedMovie">
+      <ion-select-option *ngFor="let movie of movies" [value]="movie">{{movie.title}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-row *ngIf="addForm.get('selectedMovie')?.invalid && addForm.get('selectedMovie')?.touched">
+    <ion-col size-sm = "8">
+      <p>You need to select a movie.</p>
+    </ion-col>
+  </ion-row>
+
+  <ion-item>
+    <ion-label>Description</ion-label>
+    <ion-input formControlName="description"></ion-input>
+  </ion-item>
+  <ion-row *ngIf="addForm.get('description')?.invalid && addForm.get('description')?.touched">
+    <ion-col size-sm = "8">
+      <p>You need to add description.</p>
+    </ion-col>
+  </ion-row>
+
+  <ion-button type="submit" expand="full" [disabled]="addForm.invalid">Add</ion-button>
+</form>
+</ion-content>

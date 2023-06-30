@@ -5,15 +5,16 @@
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
 <ion-grid>
   <ion-row  class="ion-justify-content-center">
     <ion-col size-sm = "4">
       <ion-label position="floating">Name</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input type="text" formControlName="name"></ion-input>
     </ion-col>
     <ion-col size-sm = "4">
       <ion-label position="floating">Lastname</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input type="text" formControlName="lastname"></ion-input>
     </ion-col>
   </ion-row>
 
@@ -21,19 +22,38 @@
     <ion-col size-sm = "8">
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input type="email"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Password</ion-label>
-        <ion-input type="password"></ion-input>
-      </ion-item>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>   
     </ion-col>
   </ion-row>
-  
+  <ion-row *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+    <ion-col size-sm = "8">
+      <p>Should be a valid email address.</p>
+    </ion-col>
+  </ion-row>
+
+
   <ion-row  class="ion-justify-content-center">
     <ion-col size-sm = "8">
-      <ion-button type="submit" shape="round" expand="block">Register</ion-button>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
     </ion-col>
   </ion-row>
+  <ion-row *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+    <ion-col size-sm = "8">
+      <p>Should be minimum 7 characters long.</p>
+    </ion-col>
+  </ion-row>
+ 
+
+  <ion-row  class="ion-justify-content-center">
+    <ion-col size-sm = "8">
+      <ion-button type="submit" shape="round" expand="block" [disabled]="registerForm.invalid" >Register</ion-button>
+    </ion-col>
+  </ion-row>
+
 </ion-grid>
+</form>
 </ion-content>

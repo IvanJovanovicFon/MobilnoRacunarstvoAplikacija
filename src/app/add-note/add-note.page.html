@@ -1,11 +1,47 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>addNote</ion-title>
+    <ion-buttons slot = "start">
+<ion-back-button defaultHref="/movie-notes/tabs/explore"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-searchbar color="secondary" animated="true" show-clear-button="focus" value="Search for note" [(ngModel)]="searchTerm" (ionChange)="search()"></ion-searchbar>
 <ion-content>
-<ion-list>
-</ion-list>
+  <ion-searchbar color="secondary" animated="true" show-clear-button="focus" placeholder="Search for movies"
+    [(ngModel)]="searchTerm" (ionChange)="search()">
+  </ion-searchbar>
+
+  <ion-list *ngIf="searchResults.length > 0">
+    <ion-label>Movies</ion-label>
+    <p>You need to select a movie.</p>
+    <ion-item *ngFor="let movie of searchResults" (click)="onSelectMovie(movie)">
+      <ion-thumbnail slot="start">
+        <img [src]="(movie.poster_path)" alt="Movie Poster">
+      </ion-thumbnail>
+      <ion-label>{{ movie.title }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+<form [formGroup]="addForm" (ngSubmit)="addNote()">
+  <ion-row *ngIf="addForm.get('selectedMovie')?.invalid && addForm.get('selectedMovie')?.touched">
+    <ion-col size-sm = "8">
+      <ion-title>Add new note</ion-title>
+    </ion-col>
+  </ion-row>
+  //oovde treba da se stavi neki label nesto da se vidi npr slika i title od filma, a ja sam ga u tsu sacuvao i sve i odradio add,smara
+  me a i ti si radila sa formama pa ti je ppoznatije, takodje napravi da ovo tek iskoci kad  selektuje film, tj kad se klikne onSelected
+
+  <ion-item>
+    <ion-label>Description</ion-label>
+    <ion-input formControlName="description"></ion-input>
+  </ion-item>
+  <ion-row *ngIf="addForm.get('description')?.invalid && addForm.get('description')?.touched">
+    <ion-col size-sm = "8">
+      <p>You need to add description.</p>
+    </ion-col>
+  </ion-row>
+
+  <ion-button type="submit" expand="full" [disabled]="addForm.invalid">Add</ion-button>
+</form>
 </ion-content>

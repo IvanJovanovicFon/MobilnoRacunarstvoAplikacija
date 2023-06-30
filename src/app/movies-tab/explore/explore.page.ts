@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from '../note.model';
 import { NoteService } from '../note.service';
+import { HideMenuService } from 'src/app/services/hide-menu.service';
 
 @Component({
   selector: 'app-explore',
@@ -10,7 +11,7 @@ import { NoteService } from '../note.service';
 export class ExplorePage implements OnInit {
   notes: Note[] = [];
 
-  constructor(private noteService: NoteService) {}
+  constructor(private noteService: NoteService, private menuService:HideMenuService) {}
 
   searchTerm: string = '';
   searchResults: Note[] = [];
@@ -26,6 +27,7 @@ export class ExplorePage implements OnInit {
   }
 
   ngOnInit() {
+    this.menuService.setMenuHidden(false)
    this.notes= this.noteService.getNotes();
    if (this.searchTerm.trim() === '') {
     this.searchResults = this.notes;
