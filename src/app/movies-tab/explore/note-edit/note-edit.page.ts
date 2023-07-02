@@ -2,7 +2,7 @@ import { Note } from '../../note.model';
 import { ActivatedRoute } from '@angular/router';
 import { NoteService } from '../../note.service';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonHeader } from '@ionic/angular';
+import { AlertController, IonHeader } from '@ionic/angular';
 import { HideMenuService } from 'src/app/services/hide-menu.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -19,7 +19,7 @@ export class NoteEditPage implements OnInit, OnDestroy {
   
   editForm: FormGroup = new FormGroup({})
 
-     constructor(private route:ActivatedRoute, private notesService: NoteService, private hideMenuServie: HideMenuService) { }
+     constructor(private route:ActivatedRoute, private notesService: NoteService, private hideMenuServie: HideMenuService, private alertController:AlertController) { }
 
      ngOnInit(): void {
        this.HideMenu(true);
@@ -29,6 +29,34 @@ export class NoteEditPage implements OnInit, OnDestroy {
       }
       editNote(){
 
+      }
+      async showAlert() {
+        const alert = await this.alertController.create({
+          header: 'Edit note',
+          message: 'Do you want to confirm edit?',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Cancel clicked');
+                // Dodajte željenu logiku koja se izvršava prilikom klika na dugme "Cancel"
+              },
+            },
+            {
+              text: 'Edit',
+              handler: () => {
+                console.log('OK clicked');
+                // Dodajte željenu logiku koja se izvršava prilikom klika na dugme "OK"
+                // Pozovite metodu za submit forme ako je potrebno
+                this.editNote();
+              },
+            },
+          ],
+        });
+    
+        await alert.present();
       }
       ionViewDidEnter(){
         this.HideMenu(true);

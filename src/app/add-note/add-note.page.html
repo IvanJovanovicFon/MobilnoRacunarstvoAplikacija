@@ -31,7 +31,19 @@
   </ion-row>
   //oovde treba da se stavi neki label nesto da se vidi npr slika i title od filma, a ja sam ga u tsu sacuvao i sve i odradio add,smara
   me a i ti si radila sa formama pa ti je ppoznatije, takodje napravi da ovo tek iskoci kad  selektuje film, tj kad se klikne onSelected
-
+  <ion-row *ngIf="selectedMovieData!==null">
+    <ion-col size = "4" >
+        <img src = '{{selectedMovieData.imageUrl}}' alt="Movie Image">
+    </ion-col>
+    <ion-col offset="1">
+      <ion-label class="movie-title">{{selectedMovieData.title}}</ion-label>
+      <ion-row>
+        <ion-col>
+          <ion-label class="movie-year">{{selectedMovieData.year}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
   <ion-item>
     <ion-label>Description</ion-label>
     <ion-input formControlName="description"></ion-input>

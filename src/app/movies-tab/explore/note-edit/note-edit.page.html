@@ -50,6 +50,6 @@
       </ion-col>
     </ion-row>
   
-    <ion-button type="submit" expand="full" [disabled]="editForm.invalid">Edit</ion-button>
+    <ion-button type="submit" expand="full" [disabled]="editForm.invalid" (click)="showAlert()">Edit</ion-button>
   </form>
 </ion-content>
