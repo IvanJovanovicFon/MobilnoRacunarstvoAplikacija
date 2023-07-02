@@ -1,45 +1,11 @@
-<ion-menu  side="start"  contentId='main'>
-  <ion-header>
-<ion-toolbar>
-    <ion-title>Menu</ion-title>
-</ion-toolbar>
-</ion-header>
-<ion-content>
-<ion-list>
-<ion-menu-toggle>
-<ion-item [routerLink]="'/my-profile'">
-    <ion-icon name="person-circle" slot="start"></ion-icon>
-    <ion-label>My profile</ion-label>
-</ion-item>
-</ion-menu-toggle>
 
-<ion-menu-toggle>
-<ion-item [routerLink]="'/add-note'" >
-<ion-icon name="add-circle-outline" slot="start"></ion-icon>
-<ion-label>Add notes</ion-label>
-</ion-item>
-</ion-menu-toggle>
-
-<ion-menu-toggle>
-<ion-item [routerLink]="'/add-note'" >
-  <ion-icon name="log-out-outline" slot="start"></ion-icon>
-  <ion-label>Logout</ion-label>
-</ion-item>
-</ion-menu-toggle>
-
-</ion-list>
-</ion-content>
-
-</ion-menu>
-
-<ion-header>
+<ion-header *ngIf="isMenuHidden()===false">
 <ion-toolbar>
   <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
   </ion-buttons>
 </ion-toolbar>
 </ion-header>
-
 
 <ion-tabs>
   <ion-tab-bar slot="bottom">
@@ -51,11 +17,6 @@
     <ion-tab-button tab="favorites">
       <ion-icon name="happy-outline"></ion-icon>
       <ion-label>Favorites</ion-label>
-    </ion-tab-button>
-    
-    <ion-tab-button tab="watch-list">
-      <ion-icon name="bookmark-outline"></ion-icon>
-      <ion-label>Watch list</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

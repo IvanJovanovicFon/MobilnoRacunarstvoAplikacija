@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: AddNotePage
+  },
+  {
+    path: 'add-form',
+    loadChildren: () => import('./add-form/add-form.module').then( m => m.AddFormPageModule)
   }
 ];
 

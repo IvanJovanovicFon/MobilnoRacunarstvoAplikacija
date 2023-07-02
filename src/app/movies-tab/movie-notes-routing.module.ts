@@ -22,10 +22,6 @@ const routes: Routes = [
         path: 'favorites',
         loadChildren: () => import('./favorites/favorites.module').then( m => m.FavoritesPageModule)
       },
-      {
-        path: 'watch-list',
-        loadChildren: () => import('./watch-list/watch-list.module').then( m => m.WatchListPageModule)
-      }
     ]
   },
   {

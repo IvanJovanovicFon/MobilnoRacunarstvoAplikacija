@@ -1,25 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Favorites</ion-title>
+    <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-searchbar color="secondary" animated="true" show-clear-button="focus" placeholder="Search for movies"
-    [(ngModel)]="searchTerm" (ionChange)="search()">
-  </ion-searchbar>
 
-  <ion-list *ngIf="searchResults.length > 0">
-    <ion-item *ngFor="let movie of searchResults">
-      <ion-thumbnail slot="start">
-        <img [src]="(movie.poster_path)" alt="Movie Poster">// ne rade slike ovde
-      </ion-thumbnail>
-      <ion-label>{{ movie.title }}</ion-label>
-    </ion-item>
-  </ion-list>
-
-  <div class="empty-state" *ngIf="searchResults.length === 0">
-    No results found.
-  </div>
-</ion-content>
 
