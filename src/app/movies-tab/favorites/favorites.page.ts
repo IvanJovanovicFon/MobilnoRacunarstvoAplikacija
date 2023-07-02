@@ -5,6 +5,7 @@ import { AxiosResponse } from 'axios';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NoteService } from '../note.service';
 import { HideMenuService } from 'src/app/services/hide-menu.service';
+import { Note } from '../note.model';
 
 @Component({
   selector: 'app-favorites',
@@ -12,6 +13,8 @@ import { HideMenuService } from 'src/app/services/hide-menu.service';
   styleUrls: ['./favorites.page.scss'],
 })
 export class FavoritesPage implements OnInit {
+
+  favoriteNotes: Note[]=[];
 constructor(private menuService:HideMenuService){}
 
 ngOnInit(): void {

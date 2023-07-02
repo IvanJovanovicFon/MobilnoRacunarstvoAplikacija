@@ -9,6 +9,7 @@ import { ExplorePageRoutingModule } from './explore-routing.module';
 import { ExplorePage } from './explore.page';
 import { NoteElementComponent } from '../note-element/note-element.component';
 import { MovieElementComponent } from '../note-element/movie-element/movie-element.component';
+import { NoteElementModule } from '../note-element/note-element.module';
 
 
 @NgModule({
@@ -16,8 +17,9 @@ import { MovieElementComponent } from '../note-element/movie-element/movie-eleme
     CommonModule,
     FormsModule,
     IonicModule,
-    ExplorePageRoutingModule
+    ExplorePageRoutingModule,
+    NoteElementModule
   ],
-  declarations: [ExplorePage, NoteElementComponent, MovieElementComponent]
+  declarations: [ExplorePage,  MovieElementComponent]
 })
 export class ExplorePageModule {}

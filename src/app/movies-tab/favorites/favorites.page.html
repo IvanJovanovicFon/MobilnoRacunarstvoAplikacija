@@ -4,5 +4,12 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <ion-list>
+    <app-note-element *ngFor="let note of favoriteNotes" [note] = "note" ></app-note-element>
+  </ion-list>
+  </ion-content>
+  
+
 
 

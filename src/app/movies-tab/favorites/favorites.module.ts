@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FavoritesPageRoutingModule } from './favorites-routing.module';
 
 import { FavoritesPage } from './favorites.page';
+import { NoteElementModule } from '../note-element/note-element.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { FavoritesPage } from './favorites.page';
     FormsModule,
     IonicModule,
     FavoritesPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NoteElementModule
   ],
   declarations: [FavoritesPage]
 })
