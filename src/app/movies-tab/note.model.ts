@@ -6,6 +6,4 @@ description: string;
 userId: string;
 movieId:string;
 movie:Movie;
-isFavorite: boolean;
-isOnWatchlist: boolean;
 }
