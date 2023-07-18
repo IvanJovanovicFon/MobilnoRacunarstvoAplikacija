@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -8,7 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterPage implements OnInit {
 
-  constructor() {
+  constructor(private authService:AuthService, private router:Router, private load:LoadingController) {
   }
    registerForm: FormGroup =  new FormGroup({})
 
@@ -21,7 +24,18 @@ export class RegisterPage implements OnInit {
     });    
   }
   onRegister(){
-    console.log(this.registerForm)
+    this.load
+    .create({message: 'registering...'})
+    .then((loadingEl)=>{
+      loadingEl.present();
+      console.log(this.registerForm)
+      this.authService.register(this.registerForm.value).subscribe(resData=>{
+        console.log("Uspesno")
+        console.log(resData);
+        this.router.navigateByUrl("/movie-notes/tabs/explore")
+        loadingEl.dismiss();
+      })
+    })
   }
 
 }

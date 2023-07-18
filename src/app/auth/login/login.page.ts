@@ -10,8 +10,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup = new FormGroup({});
-
-  constructor(private authService:AuthService, private router:Router) { }
+isLoading =false;
+  constructor(private authService:AuthService, private router:Router) {}
 
   ngOnInit() {
     this.loginForm=new FormGroup({
@@ -20,9 +20,15 @@ export class LoginPage implements OnInit {
     });
   }
     onLogin(){
-      this.authService.logIn();
-      this.router.navigateByUrl("/movie-notes/tabs/explore")
+      this.isLoading = true;
+
+      this.authService.logIn(this.loginForm.value).subscribe(resData=>{
+        console.log("Uspesno")
+        console.log(resData)
+        this.router.navigateByUrl("/movie-notes/tabs/explore")
+      });
     }
+
     onRegister(){
       this.router.navigateByUrl("/register")
     }

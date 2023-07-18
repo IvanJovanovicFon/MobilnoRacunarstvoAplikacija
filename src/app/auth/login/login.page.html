@@ -23,11 +23,18 @@
       </ion-list>
     </ion-col>
   </ion-row>
+
+<div class  = 'ion-text-center'>
+  <ion-spinner color = 'primary'*ngIf="isLoading"></ion-spinner>
+</div>
+
   <ion-row class="ion-justify-content-center">
     <ion-col size-sm="8">
-      <ion-button type="submit" expand="block" shape="round" [disabled]="loginForm.invalid" >Log in</ion-button>
+      <ion-button type="submit" expand="block" shape="round" 
+      [disabled]="loginForm.invalid" *ngIf="!isLoading" >Log in</ion-button>
     </ion-col>
   </ion-row>
+
   <ion-row class="ion-justify-content-center">
     <ion-col size-sm="4">
       <p color = "primary">Don't have an account? <a [routerLink]="['/register']">Register here/vidi ovo nesto mi nece vrv zbog ruta ili auth gardda ili tako nesto</a></p>

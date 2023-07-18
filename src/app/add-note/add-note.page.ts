@@ -18,6 +18,7 @@ export class AddNotePage{
   
   constructor(private movieApiService:MovieApiService, private noteService: NoteService) {
   }
+
   async search() {
     try {
       if (this.searchTerm.trim() !== '') {
@@ -32,7 +33,6 @@ export class AddNotePage{
           year:result.release_date,
           imageUrl: result.poster_path
         }));
-        console.log(movies[1].imageUrl); 
       } else {
         this.searchResults = [];
       }

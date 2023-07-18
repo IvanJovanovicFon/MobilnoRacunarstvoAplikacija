@@ -20,7 +20,9 @@ interface NoteData{
 export class MovieNotesService {
 
   private _notes=new BehaviorSubject<Note[]>([]);
+
   constructor(private http: HttpClient) { }
+
   get notes(){
     return this._notes.asObservable();
   }
@@ -64,6 +66,7 @@ addMovie(id:string,  title:string, year:string, imageUrl:string){
     imageUrl
   });
 }
+
 getMovies(){
   return this.http.get<{[key:string]:MovieData}>('https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json');
 }

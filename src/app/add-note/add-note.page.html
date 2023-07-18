@@ -3,7 +3,7 @@
     <ion-buttons slot = "start">
 <ion-back-button defaultHref="/movie-notes/tabs/explore"></ion-back-button>
     </ion-buttons>
-    <ion-title>My profile</ion-title>
+    <ion-title>Add note</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -29,8 +29,6 @@
       <ion-title>Add new note</ion-title>
     </ion-col>
   </ion-row>
-  //oovde treba da se stavi neki label nesto da se vidi npr slika i title od filma, a ja sam ga u tsu sacuvao i sve i odradio add,smara
-  me a i ti si radila sa formama pa ti je ppoznatije, takodje napravi da ovo tek iskoci kad  selektuje film, tj kad se klikne onSelected
   <ion-row *ngIf="selectedMovieData!==null">
     <ion-col size = "4" >
         <img src = '{{selectedMovieData.imageUrl}}' alt="Movie Image">
