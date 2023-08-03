@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Note } from '../note.model';
 import { NoteService } from '../note.service';
 import { HideMenuService } from 'src/app/services/hide-menu.service';
+import { MovieNotesService } from 'src/app/movie-notes.service';
 
 @Component({
   selector: 'app-explore',
@@ -11,7 +12,7 @@ import { HideMenuService } from 'src/app/services/hide-menu.service';
 export class ExplorePage implements OnInit {
   notes: Note[] = [];
 
-  constructor(private noteService: NoteService, private menuService:HideMenuService) {}
+  constructor(private noteService: MovieNotesService, private menuService:HideMenuService) {}
 
   searchTerm: string = '';
   searchResults: Note[] = [];
@@ -21,16 +22,25 @@ export class ExplorePage implements OnInit {
       this.searchResults = this.notes;
     } else {
     this.searchResults = this.notes.filter((note: Note) =>
-      note.movie.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+      note.movieTitle.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
 
   ngOnInit() {
     this.menuService.setMenuHidden(false)
-   this.notes= this.noteService.getNotes();
-   if (this.searchTerm.trim() === '') {
-    this.searchResults = this.notes;
-   }
+
+    this.noteService.getNotes().subscribe(
+      (notes: Note[]) => {
+        this.notes = notes;
+        if (this.searchTerm.trim() === '') {
+          this.searchResults = this.notes;
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+    
   }
 }

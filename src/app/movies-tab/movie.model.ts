@@ -1,6 +1,6 @@
 export interface Movie {
-id: string;
-title: string;
-year:string;
-imageUrl: string;
+id: string | null;
+title: string | null;
+year:string | null;
+imageUrl: string | null;
 }

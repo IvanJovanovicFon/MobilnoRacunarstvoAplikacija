@@ -42,6 +42,15 @@ export class AuthService {
     ))
   }
 
+  get userId(){
+    return this._user.asObservable()
+    .pipe(
+      map((user)=>{
+        if(user) return user.id;
+        else return null;
+      }
+    ))
+  }
 
 //trenutno sam je uzeo kao web app, a ne kao android na firebase
   register(user:UserData){

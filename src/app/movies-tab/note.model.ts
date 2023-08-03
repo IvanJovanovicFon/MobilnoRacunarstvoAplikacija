@@ -1,11 +1,8 @@
 import { Movie } from "./movie.model";
 
-export interface Note {
-id:string;
-description: string;
-userId: string;
-movieId:string;
-movie:Movie;
-isFavorite: boolean;
-isOnWatchlist: boolean;
+export class Note {
+
+constructor(public id:string | null,public description:string,public movieId:string,
+    public movieTitle:string,public movieYear:string,public movieImageUrl:string
+    ,public userId:string | null){}
 }

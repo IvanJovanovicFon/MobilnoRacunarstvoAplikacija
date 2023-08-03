@@ -4,6 +4,7 @@ import { Note } from '../movies-tab/note.model';
 import { Movie } from '../movies-tab/movie.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NoteService } from '../movies-tab/note.service';
+import { MovieNotesService } from '../movie-notes.service';
 
 
 @Component({
@@ -15,8 +16,10 @@ export class AddNotePage{
   searchTerm: string = '';
   searchResults: any[] = [];
   addForm: FormGroup = new FormGroup({})
-  
-  constructor(private movieApiService:MovieApiService, private noteService: NoteService) {
+  formSubmitted = false;
+
+
+  constructor(private movieApiService:MovieApiService, private noteService: MovieNotesService) {
   }
 
   async search() {
@@ -42,26 +45,58 @@ export class AddNotePage{
   }
 
   movies: Movie[]=[];
-  selectedMovieData: Movie | null = null;
+  selectedMovieData: any | null =  null;
   
   ngOnInit() {
     this.addForm=new FormGroup({
-      selectedMoviedata:new FormControl(''),
+      selectedMovieData:new FormControl(''),
       description:new FormControl('', Validators.required)
     });
   }
 
-  onSelectMovie(movie: Movie) {
-    this.selectedMovieData = movie;
-    this.movies= [];
-    this.searchResults = []
+  onSelectMovie(movie: any) {
+    // console.log(movie)
+    if (movie) {
+      // console.log(this.selectedMovieData)
+      this.selectedMovieData = movie;
+      // console.log(this.selectedMovieData)
+      this.movies = [];
+      this.searchResults = [];
+    }
   }
 
-  addNote(){
+  onAddNote() {
     
-      //pravljenje nove beleske
-    //this.noteService.addNote(note)
-    //restartovanje forme
-    }
+    const description = this.addForm.get('description')!.value;
+    const selectedMovie = this.selectedMovieData;
+  
+    const newNote: Note = {
+      id: '',
+      description: description,
+      movieId: selectedMovie.id,
+      movieTitle: selectedMovie.title,
+      movieYear: selectedMovie.year,
+      movieImageUrl: selectedMovie.imageUrl,
+      userId: '' 
+    };
+  
+    this.noteService.addNote("", newNote.description, newNote.movieId,
+    newNote.movieTitle, newNote.movieYear, newNote.movieImageUrl, "" );
+    
 
+    this.clearFormFields();
+
+  }
+
+  clearFormFields() {
+    this.addForm.patchValue({
+      selectedMoviedata: '',
+      description: ''
+    });
+    this.selectedMovieData = null;
+    this.searchTerm = "";
+    this.formSubmitted = true;
+  }
+  
+  
 }

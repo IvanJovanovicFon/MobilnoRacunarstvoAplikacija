@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup = new FormGroup({});
-isLoading =false;
+  isLoading =false;
   constructor(private authService:AuthService, private router:Router) {}
 
   ngOnInit() {
