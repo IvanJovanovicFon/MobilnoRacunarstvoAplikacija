@@ -69,17 +69,17 @@ export class AddNotePage{
     
     const description = this.addForm.get('description')!.value;
     const selectedMovie = this.selectedMovieData;
-  
+    const year = selectedMovie.release_date.split("-")[0];
     const newNote: Note = {
       id: '',
       description: description,
       movieId: selectedMovie.id,
       movieTitle: selectedMovie.title,
-      movieYear: selectedMovie.year,
-      movieImageUrl: selectedMovie.imageUrl,
+      movieYear:  year,
+      movieImageUrl: selectedMovie.poster_path,
       userId: '' 
     };
-  
+  console.log(newNote)
     this.noteService.addNote("", newNote.description, newNote.movieId,
     newNote.movieTitle, newNote.movieYear, newNote.movieImageUrl, "" );
     

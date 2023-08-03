@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from '../note.model';
-import { NoteService } from '../note.service';
 import { HideMenuService } from 'src/app/services/hide-menu.service';
 import { MovieNotesService } from 'src/app/movie-notes.service';
 
@@ -30,17 +29,21 @@ export class ExplorePage implements OnInit {
   ngOnInit() {
     this.menuService.setMenuHidden(false)
 
-    this.noteService.getNotes().subscribe(
-      (notes: Note[]) => {
-        this.notes = notes;
-        if (this.searchTerm.trim() === '') {
-          this.searchResults = this.notes;
-        }
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-    
+    this.noteService.notes.subscribe((notes) => {
+      this.notes = notes;
+      console.log(notes);
+      this.searchResults = this.notes;
+    })
+    if (this.searchTerm.trim() === '') {
+        this.searchResults = this.notes;
+    }
+  }
+
+  ionViewWillEnter() {
+    this.noteService.getNotes().subscribe((notesData) => {
+      console.log(notesData);
+      this.notes = notesData;
+      this.searchResults = this.notes;
+    });
   }
 }

@@ -80,7 +80,7 @@ addNote(
 
 getNotes() {
   return this.http.get<{ [key: string]: NoteData }>(
-    'https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/notes.json'
+    'https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json'
   ).pipe(
     map((notesData) => {
       const notes: Note[] = [];
