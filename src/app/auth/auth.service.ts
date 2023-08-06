@@ -32,16 +32,18 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  get isUserAuthenticated(){
-    return this._user.asObservable()
-    .pipe(
-      map((user)=>{
-        if(user) return !!user.token;
-        else return false;
-      }
-    ))
+  get isUserAuthenticated() {
+    return this._user.asObservable().pipe(
+      map((user) => {
+        if (user) {
+          return !!user.token;
+        } else {
+          return false;
+        }
+      })
+    );
   }
-
+  
   get userId(){
     return this._user.asObservable()
     .pipe(
@@ -52,6 +54,19 @@ export class AuthService {
     ))
   }
 
+
+  get token(){
+    return this._user.asObservable()
+    .pipe(
+      map((user)=>{  
+        if(user) {
+          return user.token;
+        }
+          else return null;
+      }
+    ))
+  }
+ 
 //trenutno sam je uzeo kao web app, a ne kao android na firebase
   register(user:UserData){
     this._isUserAuthenticated=true
@@ -70,8 +85,6 @@ export class AuthService {
         this._user.next(user);
       }
       ))
-
-
   }
 
 

@@ -3,16 +3,16 @@
     <ion-buttons slot = "start">
 <ion-back-button defaultHref="/movie-notes/tabs/explore"></ion-back-button>
     </ion-buttons>
-    <ion-title>note-edit</ion-title>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-buttons slot = "start">
+  <!-- <ion-buttons slot = "start">
     <ion-back-button defaultHref="/movie-notes/tabs/explore"></ion-back-button>
-  </ion-buttons>
+  </ion-buttons> -->
 
-  <form [formGroup]="editForm" (ngSubmit)="editNote()">
+  <form [formGroup]="editForm">
     <ion-row >
       <ion-col size-sm = "8">
         <ion-title>Edit note</ion-title>
@@ -50,6 +50,7 @@
       </ion-col>
     </ion-row>
   
-    <ion-button type="submit" expand="full" [disabled]="editForm.invalid" (click)="showAlert()">Edit</ion-button>
-  </form>
+    <ion-button type="submit" expand="full" [disabled]="editForm.invalid" (click)="onEditNote()" >Edit</ion-button>
+    <ion-button type="submit" expand="full" (click)="onDeleteNote()">Delete</ion-button>
+  </form>  
 </ion-content>

@@ -9,7 +9,7 @@ export class NoteService {
   notes:Note[] = [];
   //constructor() { }
 
-  getNote(id: string): Note {
+  getNote(id: string | null): Note {
     const note = this.notes.find((n: Note) => n.id === id);
     if (!note) {
       throw new Error(`Note with ID ${id} not found.`);

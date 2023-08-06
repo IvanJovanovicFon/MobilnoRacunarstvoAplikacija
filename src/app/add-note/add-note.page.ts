@@ -3,7 +3,6 @@ import { MovieApiService } from '../movies-tab/movie-api.service';
 import { Note } from '../movies-tab/note.model';
 import { Movie } from '../movies-tab/movie.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NoteService } from '../movies-tab/note.service';
 import { MovieNotesService } from '../movie-notes.service';
 
 
@@ -55,11 +54,8 @@ export class AddNotePage{
   }
 
   onSelectMovie(movie: any) {
-    // console.log(movie)
     if (movie) {
-      // console.log(this.selectedMovieData)
       this.selectedMovieData = movie;
-      // console.log(this.selectedMovieData)
       this.movies = [];
       this.searchResults = [];
     }
@@ -79,13 +75,9 @@ export class AddNotePage{
       movieImageUrl: selectedMovie.poster_path,
       userId: '' 
     };
-  console.log(newNote)
     this.noteService.addNote("", newNote.description, newNote.movieId,
     newNote.movieTitle, newNote.movieYear, newNote.movieImageUrl, "" );
-    
-
     this.clearFormFields();
-
   }
 
   clearFormFields() {
