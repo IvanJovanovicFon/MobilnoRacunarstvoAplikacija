@@ -1,9 +1,14 @@
 <ion-grid>
   <ion-card class="note" color="tertiary">
+
   <ion-row >
-    <ion-col offset = "11" >
-      <ion-icon size="medium" name="create-outline" [routerLink]="['/', 'movie-notes', 'tabs', 'explore', note.id]"></ion-icon>
+    <ion-col offset="11">
+      <ion-icon size="medium" name="heart-outline" *ngIf="!note.isNoteCreatedByCurrentUser"></ion-icon>
+      <ion-icon size="medium" name="create-outline" *ngIf="note.isNoteCreatedByCurrentUser" [routerLink]="['/', 'movie-notes', 'tabs', 'explore', note.id]"></ion-icon>
     </ion-col>
+    
+
+
     <ion-col offset="1">
       <ion-title>Movie</ion-title>
     </ion-col>
@@ -33,11 +38,6 @@
   <ion-col>
     <p class="note-description">{{note.description}}</p>
   </ion-col>
-  </ion-row>
-  <ion-row>
-    <!-- <ion-col offset="9">
-      <ion-icon size="large" [name]="note.isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
-    </ion-col> -->
   </ion-row>
  </ion-card>
 </ion-grid>

@@ -1,0 +1,16 @@
+  ion-row > ion-col {
+    flex: 1;
+  }
+  
+
+ion-button.edit-button, ion-button.delete-button {
+  --border-radius: 20px;
+  --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+ion-button.edit-button:hover, ion-button.delete-button:hover {
+  --background: #404109;
+  --box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}

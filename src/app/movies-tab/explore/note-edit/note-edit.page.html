@@ -3,26 +3,13 @@
     <ion-buttons slot = "start">
 <ion-back-button defaultHref="/movie-notes/tabs/explore"></ion-back-button>
     </ion-buttons>
-
+    <ion-title>Edit note</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- <ion-buttons slot = "start">
-    <ion-back-button defaultHref="/movie-notes/tabs/explore"></ion-back-button>
-  </ion-buttons> -->
 
   <form [formGroup]="editForm">
-    <ion-row >
-      <ion-col size-sm = "8">
-        <ion-title>Edit note</ion-title>
-      </ion-col>
-    </ion-row>
-    <ion-row>  
-      <ion-col offset="1">
-        <ion-title>Movie</ion-title>
-      </ion-col>
-    </ion-row>
 
   <ion-row>
     <ion-col size = "4" >
@@ -50,7 +37,14 @@
       </ion-col>
     </ion-row>
   
-    <ion-button type="submit" expand="full" [disabled]="editForm.invalid" (click)="onEditNote()" >Edit</ion-button>
-    <ion-button type="submit" expand="full" (click)="onDeleteNote()">Delete</ion-button>
+    <ion-row>
+      <ion-col>
+        <ion-button class="edit-button" type="submit" expand="full" [disabled]="editForm.invalid" (click)="onEditNote()">Edit</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button class="delete-button" type="submit" expand="full" (click)="onDeleteNote()">Delete</ion-button>
+      </ion-col>
+    </ion-row>
+    
   </form>  
 </ion-content>

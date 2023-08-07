@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
 
   imports: [CommonModule, IonicModule, RouterModule],
 
-  exports: [NoteElementComponent] // Export the component
+  exports: [NoteElementComponent] 
 
 })
 

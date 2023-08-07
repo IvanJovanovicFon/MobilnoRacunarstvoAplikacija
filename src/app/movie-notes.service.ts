@@ -40,11 +40,10 @@ export class MovieNotesService {
     movieTitle: string,
     movieYear: string,
     movieImageUrl: string,
-    userId: string
+    userId: string |null
   ) {
     let generatedId: string;
-    let newNote: Note;
-  
+    let newNote: Note
     this.authService.token.pipe(
       take(1),
       switchMap((token) => {
@@ -57,7 +56,7 @@ export class MovieNotesService {
           movieImageUrl,
           userId
         );
-  
+
         return this.http.post<{ name: string }>(
           `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json?auth=${token}`,
           newNote
@@ -111,7 +110,6 @@ deleteNote(id: string | null) {//fali samo da se ubaci da svako svooj samo moze 
   return this.authService.token.pipe(
     take(1),
     switchMap((token) => {
-      console.log("ne ulazzi u switchmap, ne znam zasto")
       return this.http.delete(
         `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies/${id}.json?auth=${token}`
       ).pipe(
@@ -150,11 +148,9 @@ editNote(//fali samo da se ubaci da svako svooj samo moze da obrise
     }),
     take(1),
     tap((notes) => {
-      console.log('Updating notes with edited note:', id);
-
       const updateNoteIndex = notes.findIndex((n) => n.id === id);
       const updatedNotes = [...notes];
-      updatedNotes[updateNoteIndex] = new Note(//ubaciti prave vrednosti
+      updatedNotes[updateNoteIndex] = new Note(
         id,
         description,
         movieId,

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieApiService } from '../movies-tab/movie-api.service';
 import { Note } from '../movies-tab/note.model';
-import { Movie } from '../movies-tab/movie.model';
+import { Movie } from '../Movie.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MovieNotesService } from '../movie-notes.service';
+import { AuthService } from '../auth/auth.service';
+import { map, switchMap } from 'rxjs';
 
 
 @Component({
@@ -18,8 +20,9 @@ export class AddNotePage{
   formSubmitted = false;
 
 
-  constructor(private movieApiService:MovieApiService, private noteService: MovieNotesService) {
-  }
+  constructor(private movieApiService:MovieApiService, 
+    private noteService: MovieNotesService, 
+    private authService: AuthService) {}
 
   async search() {
     try {
@@ -62,33 +65,44 @@ export class AddNotePage{
   }
 
   onAddNote() {
-    
     const description = this.addForm.get('description')!.value;
     const selectedMovie = this.selectedMovieData;
     const year = selectedMovie.release_date.split("-")[0];
-    const newNote: Note = {
-      id: '',
-      description: description,
-      movieId: selectedMovie.id,
-      movieTitle: selectedMovie.title,
-      movieYear:  year,
-      movieImageUrl: selectedMovie.poster_path,
-      userId: '' 
-    };
-    this.noteService.addNote("", newNote.description, newNote.movieId,
-    newNote.movieTitle, newNote.movieYear, newNote.movieImageUrl, "" );
-    this.clearFormFields();
-  }
-
-  clearFormFields() {
-    this.addForm.patchValue({
-      selectedMoviedata: '',
-      description: ''
+  
+    this.authService.userId.pipe(
+      map((userId) => {
+        const newNote: Note = {
+          id: '',
+          description: description,
+          movieId: selectedMovie.id,
+          movieTitle: selectedMovie.title,
+          movieYear: year,
+          movieImageUrl: selectedMovie.poster_path,
+          userId: userId
+        };
+        return this.noteService.addNote(
+          "", 
+          newNote.description, 
+          newNote.movieId,
+          newNote.movieTitle, 
+          newNote.movieYear, 
+          newNote.movieImageUrl, 
+          userId
+        );
+      })
+    ).subscribe(() => {
+      this.clearFormFields();
     });
-    this.selectedMovieData = null;
-    this.searchTerm = "";
-    this.formSubmitted = true;
   }
   
-  
+clearFormFields() {
+  this.addForm.patchValue({
+    selectedMoviedata: '',
+    description: ''
+  });
+  this.selectedMovieData = null;
+  this.searchTerm = "";
+  this.formSubmitted = true;
+}
+
 }
