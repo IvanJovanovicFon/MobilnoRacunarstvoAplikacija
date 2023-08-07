@@ -68,7 +68,7 @@ export class NoteEditPage implements OnInit {
 
 
 
-  async onEditNote() {// ne radi lepo i plus da moze samo svoj citat
+  async onEditNote() {
     const alert = await this.alertController.create({
       header: 'Edit note',
       message: 'Do you want to confirm edit?',
@@ -84,8 +84,7 @@ export class NoteEditPage implements OnInit {
         {
           text: 'Yes',
           handler: async () => {
-            console.log('OK clicked');
-            this.notesService.editNote(
+            const editSubscription = this.notesService.editNote(
               this.note.id,
               this.editForm.value.description,
               this.note.movieId,
@@ -93,19 +92,29 @@ export class NoteEditPage implements OnInit {
               this.note.movieYear,
               this.note.movieImageUrl,
               this.note.userId
+            ).subscribe(
+              () => {
+                console.log('Note edited successfully');
+                editSubscription.unsubscribe();
+                this.router.navigate(['/movie-notes/tabs/explore']);
+              },
+              (error) => {
+                console.error('Error editing note:', error);
+                editSubscription.unsubscribe();
+              }
             );
-            this.router.navigate(['/movie-notes/tabs/explore']);
           },
         },
       ],
     });
-
     await alert.present();
   }
+  
 
   onDeleteNote() {
     this.notesService.deleteNote(this.note.id).subscribe(() => {
       console.log('Note deleted successfully');
+      this.router.navigate(['/movie-notes/tabs/explore']);
     }, (error) => {
       console.error('Error deleting note:', error);
     });

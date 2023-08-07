@@ -108,7 +108,6 @@ getNotes() {
 
 
 deleteNote(id: string | null) {//fali samo da se ubaci da svako svooj samo moze da obrise
-  console.log("delete")
   return this.authService.token.pipe(
     take(1),
     switchMap((token) => {
@@ -127,7 +126,7 @@ deleteNote(id: string | null) {//fali samo da se ubaci da svako svooj samo moze 
 }
 
 
-editNote(// ne radi lepo
+editNote(//fali samo da se ubaci da svako svooj samo moze da obrise
   id: string | null,
   description: string,
   movieId: string,
@@ -139,10 +138,8 @@ editNote(// ne radi lepo
   return this.authService.token.pipe(
     take(1),
     switchMap((token) => {
-      console.log('Token:', token);
       const url = `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies/${id}.json?auth=${token}`;
-
-      return this.http.put(url, { description, userId }).pipe(
+      return this.http.put(url, { id, description, movieId, movieTitle, movieYear, movieImageUrl, userId }).pipe(
         tap((response) => {
           console.log('PUT request response:', response);
         }),
@@ -157,7 +154,7 @@ editNote(// ne radi lepo
 
       const updateNoteIndex = notes.findIndex((n) => n.id === id);
       const updatedNotes = [...notes];
-      updatedNotes[updateNoteIndex] = new Note(
+      updatedNotes[updateNoteIndex] = new Note(//ubaciti prave vrednosti
         id,
         description,
         movieId,
