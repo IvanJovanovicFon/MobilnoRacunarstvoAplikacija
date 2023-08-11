@@ -7,4 +7,5 @@ export interface NoteExplore {
     movieImageUrl: string;
     userId: string | null;
     isNoteCreatedByCurrentUser: boolean;
+    isFavorite: boolean;
 }

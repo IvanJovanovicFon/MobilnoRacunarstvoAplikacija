@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../user.model';
 import { __values } from 'tslib';
@@ -71,9 +71,15 @@ export class AuthService {
   register(user:UserData){
     this._isUserAuthenticated=true
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
-    {email: user.email, password: user.password, returnSecureToken: true})
+    {email: user.email, password: user.password, returnSecureToken: true}).pipe(
+      catchError(errorResponse => {
+        // Obrada greške pri registraciji ne znam da li je potrebno
+        return throwError('An error occurred during registration.');
+      })
+    );
   }
 
+  public email:string="";
   logIn(user:UserData){
     this._isUserAuthenticated=true
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`,
@@ -83,8 +89,24 @@ export class AuthService {
         const expirationTime= new Date(new Date().getTime() + +userData.expiresIn*1000);
         const user =  new User(userData.localId, userData.email, userData.idToken, expirationTime)
         this._user.next(user);
+        this.email=user.email;
+      }),
+      catchError(errorResponse => {
+        let errorMessage = 'An error occurred!';
+        if (errorResponse.error && errorResponse.error.error) {
+          switch (errorResponse.error.error.message) {
+            case 'EMAIL_NOT_FOUND':
+              errorMessage = 'Email not found.';
+              break;
+            case 'INVALID_PASSWORD':
+              errorMessage = 'Invalid password.';
+              break;
+          }
+        }
+        return throwError(errorMessage);
       }
-      ))
+      )
+    );
   }
 
 

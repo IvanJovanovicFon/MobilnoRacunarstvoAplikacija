@@ -3,6 +3,9 @@
     <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
-
-
+<ion-content>
+  <ion-list>
+    <app-note-element *ngFor="let note of favnotes" [note] = "note" ></app-note-element>
+  </ion-list>
+  </ion-content>
 
