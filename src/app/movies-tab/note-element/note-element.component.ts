@@ -24,19 +24,16 @@ currentUserId: string | null="";
     this.authService.userId.subscribe((userId) => {
       this.currentUserId = userId;
     if (!this.note.isFavorite) {
-      console.log("sacuvano")
+      console.log("dodato u omiljene")
       this.noteService.addFavoriteNote(this.currentUserId, this.note.id, this.note.description, this.note.movieId,
         this.note.movieTitle, this.note.movieYear, this.note.movieImageUrl, this.note.userId);
         this.note.isFavorite = true;
       }
      else {
-      console.log("odcuvano")
       let fId=null;
       this.noteService.getFId(this.note.id, this.currentUserId).subscribe((favId)=>{
       
         fId=favId;
-        
-        console.log(fId)
         if(fId===null){
           return;
         }
@@ -44,7 +41,7 @@ currentUserId: string | null="";
         this.noteService.deleteFavoriteNote(fId, this.currentUserId).subscribe(() => {
         this.note.isFavorite = false;
           
-        console.log("obrisano")
+        console.log("uklonjeno iz omiljenih")
         });
       })
       

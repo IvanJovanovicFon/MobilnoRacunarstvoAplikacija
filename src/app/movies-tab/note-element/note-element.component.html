@@ -2,9 +2,11 @@
   <ion-card class="note" color="tertiary">
 
   <ion-row >
-    <ion-col offset="11">
+    <ion-col offset="11" *ngIf="!note.isNoteCreatedByCurrentUser">
       <ion-icon size="large" name="heart-outline" *ngIf="!note.isFavorite" (click)="toggleFavoriteNote()"></ion-icon>
       <ion-icon size="large" name="heart"  *ngIf="note.isFavorite" (click)="toggleFavoriteNote()"></ion-icon>
+    </ion-col>
+    <ion-col offset="11">
       <ion-icon size="large" name="create-outline" *ngIf="note.isNoteCreatedByCurrentUser" [routerLink]="['/', 'movie-notes', 'tabs', 'explore', note.id]"></ion-icon>
     </ion-col>
     

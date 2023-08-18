@@ -213,19 +213,6 @@ deleteNote(id: string | null) {
 }
 
 getFId(id: string | null, savedById: string | null) {
-  // return this.authService.token.pipe(
-  //   take(1),
-  //   switchMap((token) => {
-  //     return this.http.get<{[key: string]: FavNoteData}>(
-  //       `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/favorites.json?auth=${token}&orderBy="savedById"&equalTo="${savedById}"`
-  //     );
-  //   }),
-  //   map((resData) => {
-  //     const favoriteNotes = Object.values(resData);
-  //     const firstMatchingNote = favoriteNotes.find(note => note.id === id);
-  //     return firstMatchingNote ? firstMatchingNote.fId : null;
-  //   })
-  // );
   return this._favnotes.pipe(
     map((favNotes) => {
       const targetNote = favNotes.find((note) => note.savedById === savedById && note.id === id);
@@ -234,7 +221,6 @@ getFId(id: string | null, savedById: string | null) {
         console.log('Beleska je pronadjena')
         const fId = targetNote.fId;
         return fId;
-        //proverava za svaki favnote, treba kad pronadje da prekine?!?!??!?!?!?!??!?!?!?!??!?
       } else {
         console.log('Beleška nije pronađena.');
         return null;

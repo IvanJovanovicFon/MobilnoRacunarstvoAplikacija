@@ -4,6 +4,7 @@ import { Note } from '../note.model';
 import { MovieNotesService } from 'src/app/movie-notes.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { NoteExplore } from '../noteExplore.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-favorites',
@@ -13,6 +14,7 @@ import { NoteExplore } from '../noteExplore.model';
 export class FavoritesPage implements OnInit {
   favnotes: NoteExplore[] = [];
   currentUserId: string | null = null;
+  private dataSubscription!: Subscription;
 
 constructor(
   private noteService: MovieNotesService,
@@ -25,12 +27,12 @@ ngOnInit(): void {
   console.log(this.menuService.getMenuHidden())
 }
 
-ionViewWillEnter() {///nece da radi, a radilo je do malopre
+ionViewWillEnter() {
   console.log(111)
   this.authService.userId.subscribe((userId) => {
     this.currentUserId = userId;
     console.log(112)
-    this.noteService.getFavoriteNotes(this.currentUserId).subscribe((notesData) => {
+    this.dataSubscription=this.noteService.getFavoriteNotes(this.currentUserId).subscribe((notesData) => {
       console.log(113)
       this.favnotes = notesData.map((note) => ({
         id:note.id,
@@ -48,6 +50,11 @@ ionViewWillEnter() {///nece da radi, a radilo je do malopre
     });
   });
 
+  
+}
+ngOnDestroy() {
+  console.log("ngOnDestroy fav")
+  this.dataSubscription.unsubscribe();
 }
 }
 

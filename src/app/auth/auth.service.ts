@@ -4,7 +4,7 @@ import { BehaviorSubject, catchError, map, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../user.model';
 import { __values } from 'tslib';
-
+import { error } from 'console';
 
 interface AuthResponseData{
   kind:string;
@@ -109,6 +109,7 @@ export class AuthService {
     );
   }
 
+ 
 
   logOut(){
     this._user.next(null)

@@ -3,7 +3,7 @@ import { HideMenuService } from 'src/app/services/hide-menu.service';
 import { MovieNotesService } from 'src/app/movie-notes.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { NavController } from '@ionic/angular';
-import { catchError, forkJoin, map, of } from 'rxjs';
+import { Subscription, catchError, forkJoin, map, of } from 'rxjs';
 
 interface NoteExplore {
   id: string | null;
@@ -34,6 +34,7 @@ export class ExplorePage implements OnInit {
 
   searchTerm: string = '';
   searchResults: NoteExplore[] = [];
+  private dataSubscription!: Subscription;
 
   search() {
     if (this.searchTerm.trim() === '') {
@@ -47,23 +48,23 @@ export class ExplorePage implements OnInit {
 
   ngOnInit() {
     this.menuService.setMenuHidden(false);
-    console.log(1133)
+    console.log("ngOnInit")
   }
 
   ionViewDidLoad(){
-    console.log(223)
+    console.log("didLoad")
   }
   ionViewDidEnter(){
-    console.log(223)
+    console.log("didEnter")
   }
 
 ionViewWillEnter() {
-  console.log(111);
+  console.log("willEnter");
   this.authService.userId.subscribe((userId) => {
     this.currentUserId = userId;
 
-    this.noteService.getNotes().subscribe((notesData) => {
-      const notesAsync = notesData.map((note) =>
+    this.dataSubscription=this.noteService.getNotes().subscribe((notesData) => {
+      const notes1 = notesData.map((note) =>
         this.noteService.isFavorite(this.currentUserId, note.id).pipe(
           map((isFav) => ({
             ...note,
@@ -71,17 +72,17 @@ ionViewWillEnter() {
             isFavorite: isFav,
           })),
           catchError((error) => {
-            // Handle error here if needed
+            // err
             return of({
               ...note,
               isNoteCreatedByCurrentUser: note.userId === this.currentUserId,
-              isFavorite: false, // Set default value for isFavorite on error
+              isFavorite: false, 
             });
           })
         )
       );
 
-      forkJoin(notesAsync).subscribe((notes) => {
+      forkJoin(notes1).subscribe((notes) => {
         this.notes = notes;
         this.search();
         this.searchResults = [...this.notes];
@@ -89,6 +90,9 @@ ionViewWillEnter() {
     });
   });
 }
-
+ngOnDestroy() {
+  console.log("ngOnDestroy expl")
+  this.dataSubscription.unsubscribe();
+}
 
 }
