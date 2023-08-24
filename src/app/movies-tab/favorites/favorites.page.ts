@@ -24,16 +24,16 @@ constructor(
 
 ngOnInit(): void {
   this.menuService.setMenuHidden(false)
-  console.log(this.menuService.getMenuHidden())
+
 }
 
 ionViewWillEnter() {
-  console.log(111)
+
   this.authService.userId.subscribe((userId) => {
     this.currentUserId = userId;
-    console.log(112)
+
     this.dataSubscription=this.noteService.getFavoriteNotes(this.currentUserId).subscribe((notesData) => {
-      console.log(113)
+
       this.favnotes = notesData.map((note) => ({
         id:note.id,
         movieId:note.movieId,
@@ -45,7 +45,7 @@ ionViewWillEnter() {
         isNoteCreatedByCurrentUser: note.userId === this.currentUserId,
         isFavorite: true
       }));
-      console.log(114)
+
       this.favnotes = [...this.favnotes]; 
     });
   });
@@ -53,7 +53,7 @@ ionViewWillEnter() {
   
 }
 ngOnDestroy() {
-  console.log("ngOnDestroy fav")
+
   this.dataSubscription.unsubscribe();
 }
 }

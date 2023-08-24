@@ -5,7 +5,8 @@
 </ion-header>
 <ion-searchbar color="secondary" animated="true" show-clear-button="focus" value="Search for note" [(ngModel)]="searchTerm" (ionChange)="search()"></ion-searchbar>
 <ion-content>
-<ion-list>
-  <app-note-element *ngFor="let note of searchResults" [note] = "note" ></app-note-element>
-</ion-list>
+
+    <ion-list>
+      <app-note-element *ngFor="let note of searchResults" [note] = "note" ></app-note-element>
+    </ion-list>
 </ion-content>
