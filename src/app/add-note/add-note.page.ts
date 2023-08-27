@@ -5,8 +5,7 @@ import { Movie } from '../Movie.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MovieNotesService } from '../movie-notes.service';
 import { AuthService } from '../auth/auth.service';
-import { map, switchMap } from 'rxjs';
-
+import { EMPTY, map, switchMap, take ,mergeMap, of, catchError, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-add-note',
@@ -65,19 +64,15 @@ export class AddNotePage{
     }
   }
 
+
   onAddNote() {
     const description = this.addForm.get('description')!.value;
     const selectedMovie = this.selectedMovieData;
     const year = selectedMovie.release_date.split("-")[0];
 
-    this.authService.userId.subscribe((userId) => {
-      this.currentUserId = userId;
-      
-      if (this.currentUserId == null) {
-        return; // No need to proceed if user is not authenticated
-      }
       
       this.authService.userId.pipe(
+        take(1),
         map((userId) => {
           const newNote: Note = {
             id: '',
@@ -100,9 +95,10 @@ export class AddNotePage{
           })
           ).subscribe(() => {
             this.clearFormFields();
-          });
+         
         });
   }
+  
   
 clearFormFields() {
   this.addForm.patchValue({

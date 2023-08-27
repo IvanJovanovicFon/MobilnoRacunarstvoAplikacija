@@ -5,6 +5,8 @@ import { BehaviorSubject, EMPTY, Observable, map, switchMap, take, tap } from 'r
 import { AuthService } from './auth/auth.service';
 import { FavNote } from './movies-tab/favnote.model';
 
+import { Subscription } from 'rxjs';
+
 
 interface NoteData{
   id:string,
@@ -45,53 +47,122 @@ export class MovieNotesService {
     return this._favnotes.asObservable();
   }
 
-addNote(
-    id: string,
-    description: string,
-    movieId: string,
-    movieTitle: string,
-    movieYear: string,
-    movieImageUrl: string,
-    userId: string |null
-  ) {
-    this.authService.userId.subscribe((userId) => {
-      this.currentUserId = userId;
-  
-      if (!userId) {
-        return; // No need to proceed if user is not authenticated
-      }
-    let generatedId: string;
-    let newNote: Note
-    this.authService.token.pipe(
-      take(1),
-      switchMap((token) => {
-        newNote = new Note(
-          null,
-          description,
-          movieId,
-          movieTitle,
-          movieYear,
-          movieImageUrl,
-          userId
-        );
+// addNote(
+//     id: string,
+//     description: string,
+//     movieId: string,
+//     movieTitle: string,
+//     movieYear: string,
+//     movieImageUrl: string,
+//     userId: string |null
+//   ) {
+//     console.log("aaa")
+//     this.authService.userId.subscribe((userId) => {
+//       console.log("ббб")
+//       this.currentUserId = userId;
+      
+//       if (!userId) {
+//         return; // No need to proceed if user is not authenticated
+//       }
+//       console.log("CC")
+//     let generatedId: string;
+//     let newNote: Note
+//     this.authService.token.pipe(
+//       take(1),
+//       switchMap((token) => {
+//         newNote = new Note(
+//           null,
+//           description,
+//           movieId,
+//           movieTitle,
+//           movieYear,
+//           movieImageUrl,
+//           userId
+//         );
 
-        return this.http.post<{ name: string }>(
-          `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json?auth=${token}`,
-          newNote
-        );
-      }),
-      switchMap((resData) => {
-        generatedId = resData.name;
-        return this.notes;
-      }),
-      take(1),
-      tap((notes) => {
-        newNote.id = generatedId;
-        this._notes.next(notes.concat(newNote));
-      })
-    ).subscribe();
+//         return this.http.post<{ name: string }>(
+//           `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json?auth=${token}`,
+//           newNote
+//         );
+//       }),
+//       switchMap((resData) => {
+//         generatedId = resData.name;
+//         return this.notes;
+//       }),
+//       take(1),
+//       tap((notes) => {
+//         newNote.id = generatedId;
+//         this._notes.next(notes.concat(newNote));
+//       })
+//     ).subscribe();
+//     })
+//   }
+
+
+
+
+
+addNote(
+  id: string,
+  description: string,
+  movieId: string,
+  movieTitle: string,
+  movieYear: string,
+  movieImageUrl: string,
+  userId: string | null
+): Subscription {
+  console.log("aaa")
+  return this.authService.userId.pipe(
+    
+    take(1),
+    switchMap((userId) => {
+      if (!userId) {
+        return EMPTY;
+      }
+      console.log("bbb")
+      let newNote = new Note(
+        null,
+        description,
+        movieId,
+        movieTitle,
+        movieYear,
+        movieImageUrl,
+        userId
+      );
+
+      return this.authService.token.pipe(
+        take(1),
+        switchMap((token) => {
+          return this.http.post<{ name: string }>(
+            `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json?auth=${token}`,
+            newNote
+          );
+        }),
+        map((resData) => {
+          const generatedId = resData.name;
+          newNote.id = generatedId;
+          return newNote;
+        })
+      );
+    }),
+    switchMap((newNote) => {
+      return this.notes.pipe(
+        take(1),
+        map((notes) => [...notes, newNote])
+      );
     })
-  }
+  ).subscribe({
+    next: (updatedNotes) => {
+      this._notes.next(updatedNotes);
+    },
+    error: (error) => {
+      // Handle errors
+    }
+  });
+}
+
+
+
 
   addFavoriteNote(
     savedById: string | null,
@@ -231,19 +302,21 @@ deleteNote(id: string | null) {
 }
 
 getFId(id: string | null, savedById: string | null) {
-  return this._favnotes.pipe(
-    map((favNotes) => {
-      const targetNote = favNotes.find((note) => note.savedById === savedById && note.id === id);
-
-      if (targetNote) {
-        console.log('Beleska je pronadjena')
-        const fId = targetNote.fId;
-        return fId;
-      } else {
-        console.log('Beleška nije pronađena.');
-        return null;
-      }
-    })
+console.log(444)
+return this._favnotes.pipe(take(1),
+  map((favNotes) => {
+    const targetNote = favNotes.find((note) => note.savedById === savedById && note.id === id);
+    console.log(555)
+    
+    if (targetNote) {
+      console.log('Beleska JESTE pronadjena')
+      const fId = targetNote.fId;
+      return fId;
+    } else {
+      console.log('Beleška nije pronađena.');
+      return null;
+    }
+  })
   );
 }
 
