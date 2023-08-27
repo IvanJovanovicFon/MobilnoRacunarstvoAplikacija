@@ -18,6 +18,7 @@ export class AddNotePage{
   searchResults: any[] = [];
   addForm: FormGroup = new FormGroup({})
   formSubmitted = false;
+  currentUserId:String|null = null;
 
 
   constructor(private movieApiService:MovieApiService, 
@@ -68,31 +69,39 @@ export class AddNotePage{
     const description = this.addForm.get('description')!.value;
     const selectedMovie = this.selectedMovieData;
     const year = selectedMovie.release_date.split("-")[0];
-  
-    this.authService.userId.pipe(
-      map((userId) => {
-        const newNote: Note = {
-          id: '',
-          description: description,
-          movieId: selectedMovie.id,
-          movieTitle: selectedMovie.title,
-          movieYear: year,
-          movieImageUrl: selectedMovie.poster_path,
-          userId: userId
-        };
-        return this.noteService.addNote(
-          "", 
-          newNote.description, 
-          newNote.movieId,
-          newNote.movieTitle, 
-          newNote.movieYear, 
-          newNote.movieImageUrl, 
-          userId
-        );
-      })
-    ).subscribe(() => {
-      this.clearFormFields();
-    });
+
+    this.authService.userId.subscribe((userId) => {
+      this.currentUserId = userId;
+      
+      if (this.currentUserId == null) {
+        return; // No need to proceed if user is not authenticated
+      }
+      
+      this.authService.userId.pipe(
+        map((userId) => {
+          const newNote: Note = {
+            id: '',
+            description: description,
+            movieId: selectedMovie.id,
+            movieTitle: selectedMovie.title,
+            movieYear: year,
+            movieImageUrl: selectedMovie.poster_path,
+            userId: userId
+          };
+          return this.noteService.addNote(
+            "", 
+            newNote.description, 
+            newNote.movieId,
+            newNote.movieTitle, 
+            newNote.movieYear, 
+            newNote.movieImageUrl, 
+            userId
+            );
+          })
+          ).subscribe(() => {
+            this.clearFormFields();
+          });
+        });
   }
   
 clearFormFields() {

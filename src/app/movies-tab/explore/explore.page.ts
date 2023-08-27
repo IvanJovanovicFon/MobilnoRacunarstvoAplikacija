@@ -34,7 +34,7 @@ export class ExplorePage implements OnInit {
 
   searchTerm: string = '';
   searchResults: NoteExplore[] = [];
-  private dataSubscription!: Subscription;
+  private dataSubscription!: Subscription ;
 
   search() {
     if (this.searchTerm.trim() === '') {
@@ -48,22 +48,18 @@ export class ExplorePage implements OnInit {
 
   ngOnInit() {
     this.menuService.setMenuHidden(false);
-    console.log("ngOnInit")
   }
 
-  ionViewDidLoad(){
-    console.log("didLoad")
-  }
-  ionViewDidEnter(){
-    console.log("didEnter")
-  }
 
 ionViewWillEnter() {
-  console.log("willEnter");
   this.authService.userId.subscribe((userId) => {
     this.currentUserId = userId;
 
-    this.dataSubscription=this.noteService.getNotes().subscribe((notesData) => {
+    if (!userId) {
+      return; // No need to proceed if user is not authenticated
+    }
+
+    this.dataSubscription = this.noteService.getNotes().subscribe((notesData) => {
       const notes1 = notesData.map((note) =>
         this.noteService.isFavorite(this.currentUserId, note.id).pipe(
           map((isFav) => ({
@@ -90,8 +86,9 @@ ionViewWillEnter() {
     });
   });
 }
+
 ngOnDestroy() {
-  console.log("ngOnDestroy expl")
+
   this.dataSubscription.unsubscribe();
 }
 

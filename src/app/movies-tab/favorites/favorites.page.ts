@@ -32,6 +32,10 @@ ionViewWillEnter() {
   this.authService.userId.subscribe((userId) => {
     this.currentUserId = userId;
 
+    if (!userId) {
+      return; // No need to proceed if user is not authenticated
+    }
+
     this.dataSubscription=this.noteService.getFavoriteNotes(this.currentUserId).subscribe((notesData) => {
 
       this.favnotes = notesData.map((note) => ({
@@ -53,7 +57,6 @@ ionViewWillEnter() {
   
 }
 ngOnDestroy() {
-
   this.dataSubscription.unsubscribe();
 }
 }

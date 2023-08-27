@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Note } from './movies-tab/note.model';
-import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 import { FavNote } from './movies-tab/favnote.model';
 
@@ -32,7 +32,7 @@ interface FavNoteData{
   providedIn: 'root'
 })
 export class MovieNotesService {
-
+  private currentUserId: String|null = null;
   private _notes=new BehaviorSubject<Note[]>([]);
   private _favnotes=new BehaviorSubject<FavNote[]>([]);
 
@@ -45,7 +45,7 @@ export class MovieNotesService {
     return this._favnotes.asObservable();
   }
 
-  addNote(
+addNote(
     id: string,
     description: string,
     movieId: string,
@@ -54,6 +54,12 @@ export class MovieNotesService {
     movieImageUrl: string,
     userId: string |null
   ) {
+    this.authService.userId.subscribe((userId) => {
+      this.currentUserId = userId;
+  
+      if (!userId) {
+        return; // No need to proceed if user is not authenticated
+      }
     let generatedId: string;
     let newNote: Note
     this.authService.token.pipe(
@@ -84,6 +90,7 @@ export class MovieNotesService {
         this._notes.next(notes.concat(newNote));
       })
     ).subscribe();
+    })
   }
 
   addFavoriteNote(
@@ -94,42 +101,54 @@ export class MovieNotesService {
     movieTitle: string,
     movieYear: string,
     movieImageUrl: string,
-    userId: string |null
-  ) {
-    let generatedId: string;
-    let newNote: FavNote
-    this.authService.token.pipe(
+    userId: string | null
+  ): Observable<any> {
+    const newNote: FavNote = new FavNote(
+      null,
+      id,
+      description,
+      movieId,
+      movieTitle,
+      movieYear,
+      movieImageUrl,
+      userId,
+      savedById
+    );
+  
+    return this.authService.userId.pipe(
       take(1),
-      switchMap((token) => {
-        newNote = new FavNote(
-          null,
-          id,
-          description,
-          movieId,
-          movieTitle,
-          movieYear,
-          movieImageUrl,
-          userId,
-          savedById
+      switchMap((userId) => {
+        this.currentUserId = userId;
+  
+        if (!userId) {
+          return EMPTY;
+        }
+  
+        return this.authService.token.pipe(
+          take(1),
+          switchMap((token) => {
+            return this.http.post<{ name: string }>(
+              `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/favorites.json?auth=${token}`,
+              newNote
+            ).pipe(
+              switchMap((resData) => {
+                const generatedId = resData.name;
+                newNote.fId = generatedId;
+                return this.favnotes;
+              }),
+              take(1),
+              tap((favnotes) => {
+                this._favnotes.next(favnotes.concat(newNote));
+              }
+              )
+            );
+          })
         );
-
-        return this.http.post<{ name: string }>(
-          `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/favorites.json?auth=${token}`,
-          newNote
-        );
-      }),
-      switchMap((resData) => {
-        generatedId=resData.name;
-        return this.favnotes;
-      }),
-      take(1),
-      tap((favnotes) => {
-        newNote.fId=generatedId;
-        this._favnotes.next(favnotes.concat(newNote));
       })
-    ).subscribe();
+    );
   }
-   
+  
+  
 getNotes() {
   return this.authService.token.pipe(
     take(1),
@@ -194,7 +213,6 @@ getFavoriteNotes(savedById:string | null) {
   );
 }
 
-
 deleteNote(id: string | null) {
   return this.authService.token.pipe(
     take(1),
@@ -229,7 +247,6 @@ getFId(id: string | null, savedById: string | null) {
   );
 }
 
-
 deleteFavoriteNote(fId: string | null, savedById:string | null) {
   return this.authService.token.pipe(
     take(1),
@@ -246,7 +263,6 @@ deleteFavoriteNote(fId: string | null, savedById:string | null) {
     })
   );
 }
-
 
 editNote(
   id: string | null,

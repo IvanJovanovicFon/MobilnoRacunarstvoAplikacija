@@ -24,8 +24,6 @@ export class LoginPage implements OnInit {
       this.isLoading = true;
 
       this.authService.logIn(this.loginForm.value).subscribe(resData => {
-        console.log("Uspesno");
-        console.log(resData);
         this.router.navigateByUrl("/movie-notes/tabs/explore");
         this.isLoading = false; 
       },

@@ -13,8 +13,8 @@ export class AppComponent  {
 
   logout() {
     this.authService.logOut();
-    console.log("logout")
     this.router.navigateByUrl("/log-in")
+    console.log("logout")
   }
 
 }
