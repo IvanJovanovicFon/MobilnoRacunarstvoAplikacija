@@ -1,0 +1,34 @@
+
+CREATE TABLE User(
+    userId TEXT  PRIMARY KEY,
+    name TEXT,
+    surname TEXT,
+    email TEXT,
+    password TEXT
+);
+
+
+CREATE TABLE Movie (
+    id TEXT PRIMARY KEY,
+    movieId INTEGER,
+    movieTitle TEXT,
+    movieYear TEXT,
+    movieImageUrl TEXT,
+    description TEXT,
+    userId TEXT,
+    FOREIGN KEY (userId) REFERENCES User (userId)
+);
+
+CREATE TABLE Favorites (
+    id TEXT PRIMARY KEY,
+    movieTitle TEXT,
+    movieYear TEXT,
+    movieImageUrl TEXT,
+    description TEXT,
+    savedById TEXT,
+    userId TEXT,
+    movieId INTEGER,
+    FOREIGN KEY (savedById) REFERENCES User (userId),
+    FOREIGN KEY (userId) REFERENCES User (userId),
+    FOREIGN KEY (movieId) REFERENCES Movie (movieId)
+);

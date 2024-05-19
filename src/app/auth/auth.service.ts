@@ -7,10 +7,8 @@ import { __values } from 'tslib';
 import { error } from 'console';
 
 interface AuthResponseData{
-  kind:string;
   idToken:string;
   email:string;
-  refreshToken:string;
   localId:string;
   expiresIn: string;
   registered?:boolean;
@@ -67,13 +65,12 @@ export class AuthService {
     ))
   }
  
-//trenutno sam je uzeo kao web app, a ne kao android na firebase
+
   register(user:UserData){
     this._isUserAuthenticated=true
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
+    return this.http.post<AuthResponseData>(`http://localhost:3000/register`,
     {email: user.email, password: user.password, returnSecureToken: true}).pipe(
       catchError(errorResponse => {
-        // Obrada greške pri registraciji ne znam da li je potrebno
         return throwError('An error occurred during registration.');
       })
     );
