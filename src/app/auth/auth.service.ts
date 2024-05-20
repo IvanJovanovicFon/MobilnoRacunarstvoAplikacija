@@ -79,7 +79,7 @@ export class AuthService {
   public email:string="";
   logIn(user:UserData){
     this._isUserAuthenticated=true
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`,
+    return this.http.post<AuthResponseData>(`http://localhost:3000/login`,
     {email: user.email, password: user.password, returnSecureToken: true})
     .pipe(
       tap((userData: AuthResponseData)=>{
