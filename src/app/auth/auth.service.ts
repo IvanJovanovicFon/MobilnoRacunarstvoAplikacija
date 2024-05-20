@@ -46,8 +46,10 @@ export class AuthService {
     return this._user.asObservable()
     .pipe(
       map((user)=>{
-        if(user) return user.id;
-        else return null;
+        if(user) 
+          return user.id;
+        else 
+          return null;
       }
     ))
   }
@@ -77,6 +79,7 @@ export class AuthService {
   }
 
   public email:string="";
+
   logIn(user:UserData){
     this._isUserAuthenticated=true
     return this.http.post<AuthResponseData>(`http://localhost:3000/login`,
@@ -84,8 +87,10 @@ export class AuthService {
     .pipe(
       tap((userData: AuthResponseData)=>{
         const expirationTime= new Date(new Date().getTime() + +userData.expiresIn*1000);
-        const user =  new User(userData.localId, userData.email, userData.idToken, expirationTime)
+        const user =  new User(userData.idToken, userData.email, userData.idToken, expirationTime)
+        console.log('Moj korisnik:', userData)
         this._user.next(user);
+        console.log('Moj korisnik:', user)
         this.email=user.email;
       }),
       catchError(errorResponse => {

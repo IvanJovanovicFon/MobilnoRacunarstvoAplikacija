@@ -111,15 +111,13 @@ addNote(
   movieImageUrl: string,
   userId: string | null
 ): Subscription {
-  console.log("aaa")
   return this.authService.userId.pipe(
-    
     take(1),
     switchMap((userId) => {
       if (!userId) {
+        console.log('User ne postoji');//////Ne postoji USER
         return EMPTY;
       }
-      console.log("bbb")
       let newNote = new Note(
         null,
         description,
@@ -129,12 +127,11 @@ addNote(
         movieImageUrl,
         userId
       );
-
       return this.authService.token.pipe(
         take(1),
         switchMap((token) => {
           return this.http.post<{ name: string }>(
-            `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json?auth=${token}`,
+            `http://localhost:3000/addNote`,
             newNote
           );
         }),
@@ -156,7 +153,7 @@ addNote(
       this._notes.next(updatedNotes);
     },
     error: (error) => {
-      // Handle errors
+      console.log('Greska u  ADDNOTE');
     }
   });
 }
@@ -225,7 +222,7 @@ getNotes() {
     take(1),
     switchMap((token) => {
       return this.http.get<{ [key: string]: NoteData }>(
-        `https://movie-notes-app-6f66d-default-rtdb.europe-west1.firebasedatabase.app/movies.json?auth=${token}`
+        `http://localhost:3000/getNotes`
       );
     }),
     map((notesData: any) => {
