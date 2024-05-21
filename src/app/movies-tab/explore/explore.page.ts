@@ -56,7 +56,7 @@ ionViewWillEnter() {
     this.currentUserId = userId;
 
     if (!userId) {
-      return; // No need to proceed if user is not authenticated
+      return; //No need to proceed if user is not authenticated
     }
 
     this.dataSubscription = this.noteService.getNotes().subscribe((notesData) => {
