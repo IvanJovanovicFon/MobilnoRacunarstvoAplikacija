@@ -4,6 +4,7 @@ import { MovieNotesService } from 'src/app/movie-notes.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { NavController } from '@ionic/angular';
 import { Subscription, catchError, forkJoin, map, of } from 'rxjs';
+  import {jwtDecode} from 'jwt-decode';
 
 interface NoteExplore {
   id: string | null;
@@ -53,11 +54,14 @@ export class ExplorePage implements OnInit {
 
 ionViewWillEnter() {
   this.authService.userId.subscribe((userId) => {
-    this.currentUserId = userId;
+
 
     if (!userId) {
-      return; //No need to proceed if user is not authenticated
+
+      return; 
     }
+    const decodedToken: any = jwtDecode(userId);
+    this.currentUserId = decodedToken.userId;
 
     this.dataSubscription = this.noteService.getNotes().subscribe((notesData) => {
       const notes1 = notesData.map((note) =>

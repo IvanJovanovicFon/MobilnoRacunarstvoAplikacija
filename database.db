@@ -8,15 +8,14 @@ CREATE TABLE User(
 );
 
 
-CREATE TABLE Movie (
-    id TEXT PRIMARY KEY,
-    movieId INTEGER,
-    movieTitle TEXT,
-    movieYear TEXT,
-    movieImageUrl TEXT,
-    description TEXT,
-    userId TEXT,
-    FOREIGN KEY (userId) REFERENCES User (userId)
+CREATE TABLE IF NOT EXISTS Movie (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  movieId TEXT,
+  movieTitle TEXT,
+  movieYear TEXT,
+  movieImageUrl TEXT,
+  description TEXT,
+  userId TEXT
 );
 
 CREATE TABLE Favorites (
