@@ -47,9 +47,9 @@ export class NoteElementComponent implements OnInit {
           if (!userId) {
             return EMPTY;
           }
-
+  
           this.currentUserId = userId;
-
+  
           if (!this.note.isFavorite) {
             return this.noteService.addFavoriteNote(
               this.currentUserId,
@@ -62,19 +62,11 @@ export class NoteElementComponent implements OnInit {
               this.note.userId
             );
           } else {
-            return this.noteService
-              .getFId(this.note.movieId, this.currentUserId, this.note.userId)
-              .pipe(
-                switchMap((favId) => {
-                  if (favId === null) {
-                    return EMPTY; 
-                  }
-                  return this.noteService.deleteFavoriteNote(
-                    favId,
-                    this.currentUserId
-                  );
-                })
-              );
+            return this.noteService.deleteFavoriteNote(
+              this.note.movieId,
+              this.currentUserId,
+              this.note.userId
+            );
           }
         })
       )
@@ -83,4 +75,5 @@ export class NoteElementComponent implements OnInit {
         console.log('Toggle executed');
       });
   }
+  
 }

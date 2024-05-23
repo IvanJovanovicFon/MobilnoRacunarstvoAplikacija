@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Note } from './movies-tab/note.model';
-import { BehaviorSubject, EMPTY, Observable, map, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, map, switchMap, take, tap, throwError } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 import { FavNote } from './movies-tab/favnote.model';
 
@@ -273,49 +273,47 @@ export class MovieNotesService {
     );
   }
 
-  getFId(id: string | null, savedById: string | null, userId: string | null) {
-    return this._favnotes.pipe(
-      take(1),
-      map((favNotes) => {
-        console.log('fav:  ', favNotes)
-        const targetNote = favNotes.find(
-          (note) => note.savedById === savedById && note.movieId === id && note.userId === userId
-        );
+  // getFId(id: string | null, savedById: string | null, userId: string | null) {
+  //   return this._favnotes.pipe(
+  //     take(1),
+  //     map((favNotes) => {
+  //       console.log('id: ', id,'sbid: ', savedById,'userid: ', userId)
+  //       const targetNote = favNotes.find(
+  //         (note) => note.savedById === savedById && note.movieId === id && note.userId === userId
+  //       );
+  //       if (targetNote) {
+  //         console.log('Beleska JESTE pronadjena');
+  //         const fId = targetNote.fId;
+  //         return fId;
+  //       } else {
+  //         console.log('Beleška NIJE pronađena.');
+  //         return null;
+  //       }
+  //     })
+  //   );
+  // }
 
-        if (targetNote) {
-          console.log('Beleska JESTE pronadjena');
-          const fId = targetNote.fId;
-          return fId;
-        } else {
-          console.log('Beleška NIJE pronađena.');
-          return null;
-        }
-      })
-    );
-  }
-
-  deleteFavoriteNote(fId: string | null, savedById: string | null) {
+  deleteFavoriteNote(fId: string | null, savedById: string | null, userId: string | null) {
     return this.authService.token.pipe(
       take(1),
       switchMap((token) => {
+        if (!token || !fId || !savedById || !userId) {
+          return throwError("Missing required parameters"); 
+        }
+  
         const headers = new HttpHeaders({
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         });
+  
+        const body = { savedById, userId };
+  
         return this.http
-          .delete(`http://localhost:3000/deleteFavoriteNote/${fId}`, {
-            headers,
-          })
-          .pipe(
-            switchMap(() => this.getFavoriteNotes(savedById)),
-            take(1),
-            tap((favnotes) => {
-              this._favnotes.next(favnotes.filter((fn) => fn.fId !== fId));
-            })
-          );
+          .delete(`http://localhost:3000/deleteFavoriteNote/${fId}`, { headers, body })
       })
     );
   }
+  
 
   editNote(
     id: string | null,
