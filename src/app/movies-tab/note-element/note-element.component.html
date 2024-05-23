@@ -7,7 +7,12 @@
       <ion-icon size="large" name="heart"  *ngIf="note.isFavorite" (click)="toggleFavoriteNote()"></ion-icon>
     </ion-col>
     <ion-col offset="11">
-      <ion-icon size="large" name="create-outline" *ngIf="note.isNoteCreatedByCurrentUser" [routerLink]="['/', 'movie-notes', 'tabs', 'explore', note.id]"></ion-icon>
+      <ion-icon 
+      size="large" 
+      name="create-outline" 
+      *ngIf="note.isNoteCreatedByCurrentUser" 
+      (click)="openNoteElement(note.movieId)">
+    </ion-icon>
     </ion-col>
     
 

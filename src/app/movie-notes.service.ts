@@ -109,6 +109,7 @@ export class MovieNotesService {
         },
       });
   }
+  
   addFavoriteNote(
     savedById: string | null,
     id: string | null,
@@ -121,7 +122,7 @@ export class MovieNotesService {
   ): Observable<any> {
     const newNote: FavNote = new FavNote(
       null,
-      id,
+      null,
       description,
       movieId,
       movieTitle,
@@ -147,6 +148,7 @@ export class MovieNotesService {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             });
+            console.log('nova nota: ', newNote)
             return this.http
               .post<{ name: string }>(
                 `http://localhost:3000/addFavoriteNote`,
@@ -169,6 +171,7 @@ export class MovieNotesService {
       })
     );
   }
+
   getNotes() {
     return this.authService.token.pipe(
       take(1),
@@ -207,6 +210,7 @@ export class MovieNotesService {
       })
     );
   }
+
   getFavoriteNotes(savedById: string | null) {
     return this.authService.token.pipe(
       take(1),
@@ -246,6 +250,7 @@ export class MovieNotesService {
       })
     );
   }
+
   deleteNote(id: string | null) {
     return this.authService.token.pipe(
       take(1),
@@ -254,6 +259,7 @@ export class MovieNotesService {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         });
+        console.log('deleteid: ', id)
         return this.http
           .delete(`http://localhost:3000/deleteNote/${id}`, { headers })
           .pipe(
@@ -266,6 +272,7 @@ export class MovieNotesService {
       })
     );
   }
+
   getFId(id: string | null, savedById: string | null) {
     console.log(444);
     return this._favnotes.pipe(
@@ -287,6 +294,7 @@ export class MovieNotesService {
       })
     );
   }
+
   deleteFavoriteNote(fId: string | null, savedById: string | null) {
     return this.authService.token.pipe(
       take(1),
@@ -309,6 +317,7 @@ export class MovieNotesService {
       })
     );
   }
+
   editNote(
     id: string | null,
     description: string,
@@ -365,6 +374,7 @@ export class MovieNotesService {
       })
     );
   }
+
   getNote(id: string | null) {
     return this.authService.token.pipe(
       take(1),
@@ -390,6 +400,7 @@ export class MovieNotesService {
       })
     );
   }
+
   isFavorite(savedById: string | null, id: string | null) {
     return this.authService.token.pipe(
       take(1),

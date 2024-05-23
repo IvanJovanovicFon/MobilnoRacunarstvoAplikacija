@@ -31,7 +31,6 @@ export class NoteEditPage implements OnInit {
     private route: ActivatedRoute,
     private notesService: MovieNotesService,
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController,
     private hideMenuServie: HideMenuService,
     private alertController: AlertController,
     private router: Router

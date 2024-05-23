@@ -5,6 +5,7 @@ import { MovieNotesService } from 'src/app/movie-notes.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { switchMap, take } from 'rxjs/operators';
 import { EMPTY, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,48 +18,15 @@ export class NoteElementComponent  implements OnInit {
 movieTitle: "", movieYear:"", isNoteCreatedByCurrentUser: false, isFavorite:false}
 currentUserId: string | null="";
 
-  constructor(private noteService: MovieNotesService, private authService: AuthService) { }
+  constructor(private noteService: MovieNotesService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
 
-//   toggleFavoriteNote(){
-
-//     this.authService.userId.subscribe((userId) => {
-//       this.currentUserId = userId;
-  
-//       if (!userId) {
-//         return; // No need to proceed if user is not authenticated
-//       }
-      
-//       this.authService.userId.subscribe((userId) => {
-//         this.currentUserId = userId;
-//         if (!this.note.isFavorite) {
-//       console.log("dodato u omiljene")
-//       this.noteService.addFavoriteNote(this.currentUserId, this.note.id, this.note.description, this.note.movieId,
-//         this.note.movieTitle, this.note.movieYear, this.note.movieImageUrl, this.note.userId);
-//         this.note.isFavorite = true;
-//       }
-//      else {
-//       let fId=null;
-//       this.noteService.getFId(this.note.id, this.currentUserId).subscribe((favId)=>{
-      
-//         fId=favId;
-//         if(fId===null){
-//           return;
-//         }
-
-//         this.noteService.deleteFavoriteNote(fId, this.currentUserId).subscribe(() => {
-//           this.note.isFavorite = false;
-          
-//           console.log("uklonjeno iz omiljenih")
-//         });
-//       })
-      
-//     }
-//   })
-//   })
-// }
+  openNoteElement(movieId: string) {
+    console.log('Opening note element for movie:', movieId);
+    this.router.navigate(['/movie-notes', 'tabs', 'explore', movieId]);
+  }
 
 
 toggleFavoriteNote() {
@@ -66,7 +34,7 @@ toggleFavoriteNote() {
     take(1),
     switchMap(userId => {
       if (!userId) {
-        return EMPTY; // No need to proceed if user is not authenticated
+        return EMPTY; 
       }
 
       this.currentUserId = userId;
