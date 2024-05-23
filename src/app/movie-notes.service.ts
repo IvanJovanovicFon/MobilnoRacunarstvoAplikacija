@@ -122,7 +122,7 @@ export class MovieNotesService {
   ): Observable<any> {
     const newNote: FavNote = new FavNote(
       null,
-      null,
+      id,
       description,
       movieId,
       movieTitle,
@@ -273,22 +273,21 @@ export class MovieNotesService {
     );
   }
 
-  getFId(id: string | null, savedById: string | null) {
-    console.log(444);
+  getFId(id: string | null, savedById: string | null, userId: string | null) {
     return this._favnotes.pipe(
       take(1),
       map((favNotes) => {
+        console.log('fav:  ', favNotes)
         const targetNote = favNotes.find(
-          (note) => note.savedById === savedById && note.id === id
+          (note) => note.savedById === savedById && note.movieId === id && note.userId === userId
         );
-        console.log(555);
 
         if (targetNote) {
           console.log('Beleska JESTE pronadjena');
           const fId = targetNote.fId;
           return fId;
         } else {
-          console.log('Beleška nije pronađena.');
+          console.log('Beleška NIJE pronađena.');
           return null;
         }
       })
@@ -401,7 +400,7 @@ export class MovieNotesService {
     );
   }
 
-  isFavorite(savedById: string | null, id: string | null) {
+  isFavorite(userId:  string | null, savedById: string | null, id: string | null) {
     return this.authService.token.pipe(
       take(1),
       switchMap((token) => {
@@ -411,7 +410,7 @@ export class MovieNotesService {
         });
         return this.http
           .get<{ isFavorite: boolean }>(
-            `http://localhost:3000/isFavorite?savedById=${savedById}&id=${id}`,
+            `http://localhost:3000/isFavorite?userId=${userId}&savedById=${savedById}&id=${id}`,
             { headers }
           )
           .pipe(

@@ -65,7 +65,7 @@ ionViewWillEnter() {
 
     this.dataSubscription = this.noteService.getNotes().subscribe((notesData) => {
       const notes1 = notesData.map((note) =>
-        this.noteService.isFavorite(this.currentUserId, note.id).pipe(
+        this.noteService.isFavorite(note.userId, this.currentUserId, note.movieId).pipe(
           map((isFav) => ({
             ...note,
             isNoteCreatedByCurrentUser: note.userId === this.currentUserId,
