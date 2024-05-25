@@ -9,6 +9,8 @@ import { error } from 'console';
 interface AuthResponseData{
   idToken:string;
   email:string;
+  name: string;
+  lastname: string;
   localId:string;
   expiresIn: string;
   registered?:boolean;
@@ -17,6 +19,8 @@ interface AuthResponseData{
 interface UserData{
   email:string;
   password:string;
+  name: string;
+  lastname: string;
 }
 
 @Injectable({
@@ -26,6 +30,9 @@ export class AuthService {
 
   private _isUserAuthenticated = false;
   private _user = new BehaviorSubject<User | null>(null);
+  public email:string="";
+  public name:string="";
+  public surname:string="";
 
 
   constructor(private http: HttpClient) { }
@@ -54,7 +61,6 @@ export class AuthService {
     ))
   }
 
-
   get token(){
     return this._user.asObservable()
     .pipe(
@@ -67,31 +73,38 @@ export class AuthService {
     ))
   }
  
-
-  register(user:UserData){
-    this._isUserAuthenticated=true
-    return this.http.post<AuthResponseData>(`http://localhost:3000/register`,
-    {email: user.email, password: user.password, returnSecureToken: true}).pipe(
+  register(user: UserData) {
+    this._isUserAuthenticated = true;
+    return this.http.post<AuthResponseData>('http://localhost:3000/register', {
+      email: user.email,
+      password: user.password,
+      name: user.name,
+      surname: user.lastname,
+      returnSecureToken: true
+    }).pipe(
       catchError(errorResponse => {
         return throwError('An error occurred during registration.');
       })
     );
   }
 
-  public email:string="";
 
   logIn(user:UserData){
     this._isUserAuthenticated=true
     return this.http.post<AuthResponseData>(`http://localhost:3000/login`,
-    {email: user.email, password: user.password, returnSecureToken: true})
+    {email: user.email, password: user.password,name: user.name, lastname: user.lastname, returnSecureToken: true})
     .pipe(
       tap((userData: AuthResponseData)=>{
+        console.log('userData: ', userData)
         const expirationTime= new Date(new Date().getTime() + +userData.expiresIn*1000);
-        const user =  new User(userData.idToken, userData.email, userData.idToken, expirationTime)
-        console.log('Moj korisnik:', userData)
+        const user =  
+        new User(userData.idToken, userData.email, userData.name, userData.lastname,userData.idToken, expirationTime)
         this._user.next(user);
         console.log('Moj korisnik:', user)
         this.email=user.email;
+        this.name=user.name;
+        this.surname=user.lastname;
+
       }),
       catchError(errorResponse => {
         let errorMessage = 'An error occurred!';
@@ -110,8 +123,6 @@ export class AuthService {
       )
     );
   }
-
- 
 
   logOut(){
     this._user.next(null)
