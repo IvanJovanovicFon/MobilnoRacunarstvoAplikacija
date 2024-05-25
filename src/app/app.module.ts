@@ -4,15 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AuthService } from './auth/auth.service'; 
-
-
+import { Camera } from '@ionic-native/camera/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { CameraService } from './services/camera.service';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
-  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Camera, CameraService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

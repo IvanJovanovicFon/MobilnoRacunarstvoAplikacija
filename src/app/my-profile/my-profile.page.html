@@ -8,9 +8,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-icon name="person-outline" size="large" class="profile-icon"></ion-icon>
+  
+  <div class="profile-container">
+    <img *ngIf="userImage; else avatar" [src]="userImage" class="profile-picture"/>
+    <ng-template #avatar>
+      <ion-avatar class="profile-avatar">
+        <ion-icon name="person-outline" size="large" class="profile-icon"></ion-icon>
+      </ion-avatar>
+    </ng-template>
+  </div>
+  <ion-button expand="full" (click)="takePicture()">
+    {{ userImage ? 'Take New Photo' : 'Take Photo' }}
+  </ion-button>
+  
   <ion-grid class="ion-margin-top">
-
     <ion-row>
       <ion-col>
         <ion-label class="profile-value">Hello,  {{ name }} {{surname}}</ion-label>
