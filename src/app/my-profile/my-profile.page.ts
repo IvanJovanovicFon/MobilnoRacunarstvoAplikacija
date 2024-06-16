@@ -24,7 +24,7 @@ export class MyProfilePage implements OnInit {
     this.authService.userId.subscribe((id) => {
       if(id) 
         this.userId = id;
-      this.loadPicture();
+
     });
   }
 
@@ -37,31 +37,6 @@ export class MyProfilePage implements OnInit {
 
 
 
-  takePicture() {
-    this.cameraService.takePicture().then((imageData) => {
-      this.userImage = imageData;
-      this.savePicture(imageData);
-    }).catch((error) => {
-      console.error('Camera error:', error);
-    });
-  }
 
-  savePicture(imageData: string) {
-    this.http.post('http://localhost:3000/upload-profile-picture', {
-      userId: this.userId,
-      image: imageData
-    }).subscribe(response => {
-      console.log('Picture saved:', response);
-    });
-  }
 
-  loadPicture() {
-    this.http.get<{ image: string }>(`http://localhost:3000/get-profile-picture/${this.userId}`)
-      .subscribe(response => {
-        this.userImage = response.image || null;
-      }, error => {
-        console.error('Error loading picture:', error);
-        this.userImage = null;
-      });
-  }
 }
