@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { CameraService } from '../services/camera.service';
 import { HttpClient } from '@angular/common/http';
-
+import { Camera, CameraResultType} from '@capacitor/camera';
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.page.html',
@@ -13,11 +13,11 @@ export class MyProfilePage implements OnInit {
   email:string="";
   name:string="";
   surname:string="";
-  userImage: string | null = null;
+  userImage: string | undefined = '';
   userId: string = "";
+  picture : string = '';
 
   ngOnInit() {
-    console.log("Otvoren")
     this.email=this.authService.email;
     this.name=this.authService.name;
     this.surname=this.authService.surname;
@@ -35,6 +35,14 @@ export class MyProfilePage implements OnInit {
     private authService: AuthService
   ) {}
 
+  async takePicture(){
+    const img= await Camera.getPhoto({
+      quality:100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl
+    })
+    this.userImage = img.dataUrl;
+  }
 
 
 
